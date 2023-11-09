@@ -9920,12 +9920,45 @@ def report_view(request):
     company = company_details.objects.get(user=request.user)
     return render(request,'reports.html',{'company':company})
 
+# def inventory_summary(request):
+#     company = company_details.objects.get(user=request.user)
+#     item=AddItem.objects.all()
+#     items=recurring_bills_items.objects.all()
+
+#     return render(request,'inventory_summary.html',{'company':company,'items':items})
+
 def inventory_summary(request):
     company = company_details.objects.get(user=request.user)
     item=AddItem.objects.all()
-    items=recurring_bills_items.objects.all()
-
-    return render(request,'inventory_summary.html',{'company':company,'items':items})
+    inv=invoice_item.objects.all()
+    recur=recur_itemtable.objects.all()
+    reta=RetainerInvoice.objects.all()
+    pars=Purchase_Order_items.objects.all()
+    estim=EstimateItems.objects.all()
+    sale=sales_item.objects.all()
+    challan=ChallanItems.objects.all()
+    credit=Credititem.objects.all()
+    vencredit=Vendor_invoice_item.objects.all()
+    bills=PurchaseBillItems.objects.all()
+    recubills=recurring_bills_items.objects.all()
+    vendorbill=Vendor_Credits_Bills_items_bills.objects.all()
+    context={
+        'item':item,
+        'recur':recur,
+        'inv':inv,
+        'reta':reta,
+        'pars':pars,
+        'company':company,
+        'estim':estim,
+        'sale':sale,
+        'challan':challan,
+        'credit':credit,
+        'vencredit':vencredit,
+        'bills':bills,
+        'recubills':recubills,
+        'vendorbill':vendorbill
+    }
+    return render(request,'inventory_summary.html', context)
 
 
 def custom_repot(request):

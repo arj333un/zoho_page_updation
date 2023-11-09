@@ -126,17 +126,22 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in items %}
+            {% for i in item %}
            
             <tr>         
                 <td style="color: white;">{{i.item}}</td>
                 <td style="color: white;">{{i.hsn}}</td>
-                <td style="color: white;">{{i.}}</td>
-                <td style="color: white;">{{i.}}</td>
+                {% endfor %} 
+
+                {% for i in inv %}
                 <td style="color: white;">{{i.quantity}}</td>
-                <td style="color: white;">{{i.stock}}</td>
                 <td style="color: white;">{{i.}}</td>
-                <td style="color: white;">{{i.}}</td>
+                {% endfor %} 
+                {% for r in recur %}
+                <td style="color: white;">{{r.quantity}}</td>
+                <td style="color: white;">{{r.stock}}</td>
+                <td style="color: white;">{{r.}}</td>
+                <td style="color: white;">{{r.}}</td>
 
                 <!--<td style="color: white;">0</td>-->
                 
