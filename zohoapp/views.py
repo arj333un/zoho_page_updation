@@ -4197,7 +4197,7 @@ def create_challan_draft(request):
         except Exception as e:
             # Handle exceptions or errors here
             # You can log the error or display an error message
-            return HttpResponseServerError(f"An error occurred: {str(e)}")
+            return HttpResponseError(f"An error occurred: {str(e)}")
 
     return render(request, 'create_challan.html')  # Render the create_challan template when it's a GET request
 
@@ -9929,7 +9929,7 @@ def report_view(request):
 
 def inventory_summary(request):
     company = company_details.objects.get(user=request.user)
-    item=AddItem.objects.all()
+    items=AddItem.objects.all()
     inv=invoice_item.objects.all()
     recur=recur_itemtable.objects.all()
     reta=RetainerInvoice.objects.all()
@@ -9943,7 +9943,7 @@ def inventory_summary(request):
     recubills=recurring_bills_items.objects.all()
     vendorbill=Vendor_Credits_Bills_items_bills.objects.all()
     context={
-        'item':item,
+        'items':items,
         'recur':recur,
         'inv':inv,
         'reta':reta,
@@ -11505,7 +11505,7 @@ def GSTR_3Bpage(request):
 def GSTR_1page(request):
     company = company_details.objects.get(user=request.user)
     data=invoice.objects.all()
-    invoices=recurring_invoice.objects.all()
+    invoices=Recurring_invoice.objects.all()
     reinv=RetainerInvoice.objects.all()
     context={
         'invoices':invoices,

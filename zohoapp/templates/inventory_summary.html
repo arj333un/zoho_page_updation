@@ -85,7 +85,7 @@
       <datalist onclick="getValue()" id="customers" >
         
         {% for i in items %}
-        <option value="{{ i.item }}" >
+        <option value="{{ i.Name }}" >
     {% endfor %}
 
       
@@ -126,30 +126,197 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in item %}
+                                   
+                                 
+          {% for i in items %} 
+          <tr class="text-center" id="tb">
+       
+                            
+        
+            <td>{{i.Name }}</td>
+            
+         
+       
+         
+    
+          </tr>  
+                                      
+            <tr class="text-center" id="tb">
+       
+          
+              <td >{{i.hsn}}</td>
+              
            
-            <tr>         
-                <td style="color: white;">{{i.item}}</td>
-                <td style="color: white;">{{i.hsn}}</td>
-                {% endfor %} 
-
-                {% for i in inv %}
-                <td style="color: white;">{{i.quantity}}</td>
-                <td style="color: white;">{{i.}}</td>
-                {% endfor %} 
-                {% for r in recur %}
-                <td style="color: white;">{{r.quantity}}</td>
-                <td style="color: white;">{{r.stock}}</td>
-                <td style="color: white;">{{r.}}</td>
-                <td style="color: white;">{{r.}}</td>
-
-                <!--<td style="color: white;">0</td>-->
+         
+           
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+      
+            </tr>  
+              {% endfor %} 
+              {% for p in estim %} 
+                              
+              <tr class="text-center" id="tb">
+         
+            
+                <td>{{p.estimate.estimate_date| date:'Y-m-d'}}</td>
                 
-                {% endfor %}
-               
+             
+                <td>{{p.quantity}}</td>
+           
+             
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+        
+              </tr>  
+                {% endfor %} 
 
-            </tr>
-        </tbody>
+                {% for p in sale %} 
+                              
+                <tr class="text-center" id="tb">
+           
+              
+                  <td>{{p.sale.sales_date| date:'Y-m-d'}}</td>
+                  <td> Sales_Order</a></td>     
+                  
+               
+                  <td>{{p.quantity}}</td>
+             
+               
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+          
+                </tr>  
+                  {% endfor %} 
+                  {% for p in challan %} 
+                              
+                  <tr class="text-center" id="tb">
+             
+                
+                    <td>{{p.chellan.chellan_date| date:'Y-m-d'}}</td>
+                    
+                 
+                    <td>{{p.quantity}}</td>
+               
+                 
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+            
+                  </tr>  
+                    {% endfor %} 
+                   
+                    {% for i in credit %}          
+                    <tr class="text-center" id="tb">
+               
+                  
+                      <td>{{i.creditnote.creditnote_date| date:'Y-m-d'}}</td>
+                      <td>Credit_Note</a></td>     
+                      
+                   
+                      <td>{{i.quantity}}</td>
+                 
+                   
+                      <td>0</td>
+                      <td>0</td>
+                      <td>0</td>
+              
+                    </tr>  
+                      {% endfor %} 
+                    {% for p in pars %} 
+              <tr class="text-center"  id="tb">
+           
+                                
+            
+                <td  style="display: none;" id="tb">{{p.item}}</td>              
+                <td>{{p.PO.Ord_date| date:'Y-m-d'}}</td>
+                <td>Purchase_Order</td>     
+                
+             
+                <td>0</td>
+           
+             
+                <td>{{p.quantity}}</td>
+                <td>0</td>
+                <td>0</td>
+        
+              </tr>  
+                {% endfor %} 
+                
+                {% for p in vencredit %} 
+                <tr class="text-center"  id="tb">
+             
+                                  
+              
+                  <td>{{p.inv.vendor_date| date:'Y-m-d'}}</td>
+                  
+               
+                  <td>0</td>
+             
+               
+                  <td>{{p.quantity}}</td>
+                  <td>0</td>
+                  <td>0</td>
+          
+                </tr>  
+                  {% endfor %} 
+
+                  {% for p in bills %} 
+                  <tr class="text-center"  id="tb">
+               
+                                    
+                
+                    <td>{{p.purchase_bill.bill_date| date:'Y-m-d'}}</td>
+                    
+                 
+                    <td>0</td>
+               
+                 
+                    <td>{{p.quantity}}</td>
+                    <td>0</td>
+                    <td>0</td>
+            
+                  </tr>  
+                    {% endfor %} 
+
+                    {% for p in recubills %} 
+                    <tr class="text-center"  id="tb">
+                 
+                                      
+                  
+                      <td>{{p.recur_bills.start_date| date:'Y-m-d'}}</td>
+                      
+                   
+                      <td>0</td>
+                 
+                   
+                      <td>{{p.quantity}}</td>
+                      <td>0</td>
+                      <td>0</td>
+              
+                    </tr>  
+                      {% endfor %} 
+                      {% for p in vendorbill %} 
+                      <tr class="text-center"  id="tb">
+                   
+                                        
+                    
+                        <td>{{p.recur_bills.vendor_date| date:'Y-m-d'}}</td>
+                        
+                     
+                        <td>0</td>
+                   
+                     
+                        <td>{{p.quantity}}</td>
+                        <td>0</td>
+                        <td>0</td>
+                
+                      </tr>  
+                        {% endfor %}
+          </tbody>
       </table> 
       {% comment %} <div id="total-bill-amount" class="mt-3" style="color: white;"></div> {% endcomment %}
       <div>
