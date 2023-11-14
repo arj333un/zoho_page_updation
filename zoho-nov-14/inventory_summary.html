@@ -85,7 +85,7 @@
       <datalist onclick="getValue()" id="customers" >
         
         {% for i in items %}
-        <option value="{{ i.item }}" >
+        <option value="{{ i.Name }}" >
     {% endfor %}
 
       
@@ -125,26 +125,35 @@
                 <th style="color: white;">AVAILABLE FOR SALE</th>
             </tr>
         </thead>
-        <tbody>
-            {% for i in items %}
-           
-            <tr>         
-                <td style="color: white;">{{i.item}}</td>
-                <td style="color: white;">{{i.hsn}}</td>
-                <td style="color: white;">{{i.}}</td>
-                <td style="color: white;">{{i.}}</td>
-                <td style="color: white;">{{i.quantity}}</td>
-                <td style="color: white;">{{i.stock}}</td>
-                <td style="color: white;">{{i.}}</td>
-                <td style="color: white;">{{i.}}</td>
+      <tbody>
+        {% for i in items %}
+        <tr>         
+            <td style="color: white;">{{i.Name}}</td>
+            <td style="color: white;">{{i.hsn}}</td>
+        {% endfor %}
+    
+            <td style="color: white;">{{i.}}</td>
 
-                <!--<td style="color: white;">0</td>-->
-                
-                {% endfor %}
-               
+        {% for i in inv %}
+            <td style="color: white;">{{i.quantity}}
+        {% endfor %}
 
-            </tr>
-        </tbody>
+        {% for r in recubills %}
+            <td style="color: white;">{{r.quantity}}</td>
+        {% endfor %}
+            <td style="color: white;">{{i.}}</td>
+            <td style="color: white;">{{i.}}</td>
+            <td style="color: white;">{{i.}}</td>
+
+            <!--<td style="color: white;">0</td>-->
+            
+          
+        </tr>
+
+      </tbody>
+                                   
+                                 
+         
       </table> 
       {% comment %} <div id="total-bill-amount" class="mt-3" style="color: white;"></div> {% endcomment %}
       <div>

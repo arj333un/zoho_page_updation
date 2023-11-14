@@ -1,6 +1,0 @@
-def inventory_summary(request):
-    company = company_details.objects.get(user=request.user)
-    item=AddItem.objects.all()
-    items=recurring_bills_items.objects.all()
-
-    return render(request,'inventory_summary.html',{'company':company,'items':items})

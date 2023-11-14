@@ -9933,13 +9933,12 @@ def inventory_summary(request):
     inv=invoice_item.objects.all()
     recur=recur_itemtable.objects.all()
     reta=RetainerInvoice.objects.all()
-    pars=Purchase_Order_items.objects.all()
     estim=EstimateItems.objects.all()
     sale=sales_item.objects.all()
     challan=ChallanItems.objects.all()
     credit=Credititem.objects.all()
     vencredit=Vendor_invoice_item.objects.all()
-    bills=PurchaseBillItems.objects.all()
+    
     recubills=recurring_bills_items.objects.all()
     vendorbill=Vendor_Credits_Bills_items_bills.objects.all()
     context={
@@ -9947,14 +9946,13 @@ def inventory_summary(request):
         'recur':recur,
         'inv':inv,
         'reta':reta,
-        'pars':pars,
         'company':company,
         'estim':estim,
         'sale':sale,
         'challan':challan,
         'credit':credit,
         'vencredit':vencredit,
-        'bills':bills,
+        
         'recubills':recubills,
         'vendorbill':vendorbill
     }

@@ -125,72 +125,35 @@
                 <th style="color: white;">AVAILABLE FOR SALE</th>
             </tr>
         </thead>
-        <tbody>
+      <tbody>
+        {% for i in items %}
+        <tr>         
+            <td style="color: white;">{{i.Name}}</td>
+            <td style="color: white;">{{i.hsn}}</td>
+        {% endfor %}
+    
+            <td style="color: white;">{{i.}}</td>
+
+        {% for i in inv %}
+            <td style="color: white;">{{i.quantity}}
+        {% endfor %}
+
+        {% for r in recubills %}
+            <td style="color: white;">{{r.quantity}}</td>
+        {% endfor %}
+            <td style="color: white;">{{i.}}</td>
+            <td style="color: white;">{{i.}}</td>
+            <td style="color: white;">{{i.}}</td>
+
+            <!--<td style="color: white;">0</td>-->
+            
+          
+        </tr>
+
+      </tbody>
                                    
                                  
-          {% for i in items %} 
-          <tr class="text-center" id="tb">
-       
-                            
-        
-            <td>{{i.Name }}</td>
-            
          
-       
-         
-    
-          </tr>  
-                                      
-            <tr class="text-center" id="tb">
-       
-          
-              <td >{{i.hsn}}</td>
-              
-           
-         
-           
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-      
-            <
-                    {% endfor %} 
-
-                    {% for p in recubills %} 
-                    <tr class="text-center"  id="tb">
-                 
-                                      
-                  
-                      <td>{{p.recur_bills.start_date| date:'Y-m-d'}}</td>
-                      
-                   
-                      <td>0</td>
-                 
-                   
-                      <td>{{p.quantity}}</td>
-                      <td>0</td>
-                      <td>0</td>
-              
-                    </tr>  
-                      {% endfor %} 
-                      {% for p in vendorbill %} 
-                      <tr class="text-center"  id="tb">
-                   
-                                        
-                    
-                        <td>{{p.recur_bills.vendor_date| date:'Y-m-d'}}</td>
-                        
-                     
-                        <td>0</td>
-                   
-                     
-                        <td>{{p.quantity}}</td>
-                        <td>0</td>
-                        <td>0</td>
-                
-                      </tr>  
-                        {% endfor %}
-          </tbody>
       </table> 
       {% comment %} <div id="total-bill-amount" class="mt-3" style="color: white;"></div> {% endcomment %}
       <div>
