@@ -9937,7 +9937,7 @@ def inventory_summary(request):
     sale=sales_item.objects.all()
     challan=ChallanItems.objects.all()
     credit=Credititem.objects.all()
-    vencredit=Vendor_invoice_item.objects.all()
+    vencredit=Vendor_invoice_item.filter.quatity()
     
     recubills=recurring_bills_items.objects.all()
     vendorbill=Vendor_Credits_Bills_items_bills.objects.all()

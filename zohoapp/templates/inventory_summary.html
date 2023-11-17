@@ -126,7 +126,7 @@
             </tr>
         </thead>
       <tbody>
-        {% for i in items %}
+        {% comment %} {% for i in items %}
         <tr>         
             <td style="color: white;">{{i.Name}}</td>
             <td style="color: white;">{{i.hsn}}</td>
@@ -143,6 +143,35 @@
         
 
             <td style="color: white;">{{i.stock}}</td>
+            <td style="color: white;"></td>
+            <td style="color: white;"></td>
+
+            <!--<td style="color: white;">0</td>-->
+            
+          
+        </tr>
+        
+        {% endfor %}
+        {% endfor %}
+        {% endfor %} {% endcomment %}
+
+        {% for i in items %}
+        <tr>         
+            <td style="color: white;">{{i.Name}}</td>
+            <td style="color: white;">{{i.hsn}}</td>
+        
+    
+            <td style="color: white;"></td>
+
+        {% for inv in inv %}
+            <td style="color: white;">
+       
+
+        {% for r in recubills %}
+            <td style="color: white;"></td>
+        
+
+            <td style="color: white;"></td>
             <td style="color: white;"></td>
             <td style="color: white;"></td>
 
