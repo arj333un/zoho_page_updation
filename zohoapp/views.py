@@ -9927,36 +9927,68 @@ def report_view(request):
 
 #     return render(request,'inventory_summary.html',{'company':company,'items':items})
 
+# def inventory_summary(request):
+#     company = company_details.objects.get(user=request.user)
+#     items=AddItem.objects.all()
+#     inv=invoice_item.objects.all()
+#     recur=recur_itemtable.objects.all()
+#     reta=RetainerInvoice.objects.all()
+#     estim=EstimateItems.objects.all()
+#     sale=sales_item.objects.all()
+#     challan=ChallanItems.objects.all()
+#     credit=Credititem.objects.all()
+#     vencredit=Vendor_invoice_item.objects.all()
+    
+#     recubills=recurring_bills_items.objects.all()
+#     vendorbill=Vendor_Credits_Bills_items_bills.objects.all()
+#     context={
+#         'items':items,
+#         'recur':recur,
+#         'inv':inv,
+#         'reta':reta,
+#         'company':company,
+#         'estim':estim,
+#         'sale':sale,
+#         'challan':challan,
+#         'credit':credit,
+#         'vencredit':vencredit,
+        
+#         'recubills':recubills,
+#         'vendorbill':vendorbill
+#     }
+#     return render(request,'inventory_summary.html', context)
+
 def inventory_summary(request):
     company = company_details.objects.get(user=request.user)
-    items=AddItem.objects.all()
-    inv=invoice_item.objects.all()
-    recur=recur_itemtable.objects.all()
-    reta=RetainerInvoice.objects.all()
-    estim=EstimateItems.objects.all()
-    sale=sales_item.objects.all()
-    challan=ChallanItems.objects.all()
-    credit=Credititem.objects.all()
-    vencredit=Vendor_invoice_item.filter.quatity()
-    
-    recubills=recurring_bills_items.objects.all()
-    vendorbill=Vendor_Credits_Bills_items_bills.objects.all()
-    context={
-        'items':items,
-        'recur':recur,
-        'inv':inv,
-        'reta':reta,
-        'company':company,
-        'estim':estim,
-        'sale':sale,
-        'challan':challan,
-        'credit':credit,
-        'vencredit':vencredit,
-        
-        'recubills':recubills,
-        'vendorbill':vendorbill
+    items = AddItem.objects.all()
+    inv = invoice_item.objects.all()
+    recubills = recurring_bills_items.objects.all()
+    bills = PurchaseBillItems.objects.all()
+
+
+    # Calculate total quantity from the 'inv' table
+    total_quantity_inv = inv.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+    # Calculate total quantity from the 'recubills' table
+    total_quantity_recubills = recubills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+    total_quantity_bills = bills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+
+    # Calculate the overall total quantity
+    overall_total_quantity = total_quantity_inv + total_quantity_recubills + total_quantity_bills
+
+    context = {
+        'items': items,
+        'inv': inv,
+        'bills':bills,
+        'recubills': recubills,
+        'company': company,
+        'total_quantity': overall_total_quantity,
     }
-    return render(request,'inventory_summary.html', context)
+
+    return render(request, 'inventory_summary.html', context)
+
 
 
 def custom_repot(request):
