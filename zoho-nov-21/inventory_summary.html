@@ -126,30 +126,35 @@
             </tr>
         </thead>
       <tbody>
-        {% for i in items %}
+         {% for i in items %}
         <tr>         
             <td style="color: white;">{{i.Name}}</td>
             <td style="color: white;">{{i.hsn}}</td>
-        {% endfor %}
+        
     
-            <td style="color: white;">{{i.}}</td>
+            <td style="color: white;"></td>
 
-        {% for i in inv %}
-            <td style="color: white;">{{i.quantity}}
-        {% endfor %}
+        
+            <td style="color: white;">{{ total_quantity_in }}</td>
+       
 
-        {% for r in recubills %}
-            <td style="color: white;">{{r.quantity}}</td>
-        {% endfor %}
-            <td style="color: white;">{{i.}}</td>
-            <td style="color: white;">{{i.}}</td>
-            <td style="color: white;">{{i.}}</td>
+        
+            <td style="color: white;">{{ total_quantity }}</td>
+        
+
+            <td style="color: white;">{{i.stock|floatformat:2}}</td>
+            <td style="color: white;"></td>
+            <td style="color: white;"></td>
 
             <!--<td style="color: white;">0</td>-->
             
           
         </tr>
+        
+        
+        {% endfor %} 
 
+       
       </tbody>
                                    
                                  
