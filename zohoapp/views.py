@@ -9946,7 +9946,7 @@ def inventory_summary(request):
     total_quantity_debit = debit.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     
     #Total
-    overall_total_quantity_in =  total_quantity_inv + total_quantity_recurinv + total_quantity_debit
+    overall_total_quantity_in =  total_quantity_inv + total_quantity_recurinv - total_quantity_debit
 
 
     # Calculate total quantity from the 'recubills' table
@@ -9960,7 +9960,7 @@ def inventory_summary(request):
 
 
     # Calculate the overall total quantity
-    overall_total_quantity =  total_quantity_recubills + total_quantity_bills + total_quantity_credit
+    overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
     
     print(type(overall_total_quantity))
     
@@ -9969,9 +9969,10 @@ def inventory_summary(request):
     for i in items :
         print(type(i.stock))
         stock_in_hand = i.stock + int(overall_total_quantity) - int(overall_total_quantity_in)
-    #     # i.stock = stock_in_hand  
+        # i.stock = stock_in_hand  
         i.stock = format(stock_in_hand, '.2f')
         print(stock_in_hand)
+
 
 
     
