@@ -9993,6 +9993,60 @@ def inventory_summary(request):
     return render(request, 'inventory_summary.html', context)
 
 
+# from django.db.models import Sum
+# from collections import defaultdict
+
+# def inventory_summary(request, item_name=None):
+#     company = company_details.objects.get(user=request.user)
+
+#     inv = invoice_item.objects.all()
+#     recubills = recurring_bills_items.objects.all()
+#     bills = PurchaseBillItems.objects.all()
+#     credit = Credititem.objects.all()
+#     recurinv = recur_itemtable.objects.all()
+#     debit = Vendor_Credits_Bills_items_bills.objects.all()
+#     items = AddItem.objects.all()
+
+
+#     # Create a dictionary to store overall total quantity for each item
+#     overall_total_quantity_in_dict = defaultdict(float)
+
+#     # Calculate overall total quantity for each item and update the dictionary
+#     for item in items:
+#         total_quantity_inv = inv.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+#         total_quantity_recurinv = recurinv.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+#         total_quantity_debit = debit.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+#         overall_total_quantity_in_item = total_quantity_inv + total_quantity_recurinv - total_quantity_debit
+#         overall_total_quantity_in_dict[item.name] = overall_total_quantity_in_item
+
+#     # Update the stock in hand for each item
+#     for item in items:
+#         stock_in_hand = item.stock + item_quantities.get(item.name, 0) - overall_total_quantity_in_dict.get(item.name, 0)
+#         item.stock = format(stock_in_hand, '.2f')
+#         print(f"{item.name}: {stock_in_hand}")
+
+#     # Filter items based on the specified item_name
+#     if item_name:
+#         items = items.filter(name=item_name)
+
+#     context = {
+#         'items': items,
+#         'inv': inv,
+#         'bills': bills,
+#         'credit': credit,
+#         'recubills': recubills,
+#         'company': company,
+#         'total_quantity': overall_total_quantity,
+#         'total_quantity_in': overall_total_quantity_in,
+#         'item_quantities': item_quantities,
+#         'overall_total_quantity_in_dict': overall_total_quantity_in_dict,  # Pass the dictionary to the template
+#         'selected_item_name': item_name,  # Pass the selected item name to the template
+#     }
+
+#     return render(request, 'inventory_summary.html', context)
+
+
 
 def custom_repot(request):
     company = company_details.objects.get(user=request.user)
