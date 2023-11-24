@@ -9938,31 +9938,46 @@ def inventory_summary(request):
     
 
 
-    # Calculate total quantity from the 'inv' table
-    total_quantity_inv = inv.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    # Fetch quantity
+    last_item = inv.last()
+    total_quantity_inv = last_item.get('quantity') if last_item else 0
     
-    total_quantity_recurinv = recurinv.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-
-    total_quantity_debit = debit.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    last_item = recurinv.last()
+    total_quantity_recurinv = last_item.get('quantity') if last_item else 0
     
+    last_item = debit.last()
+    total_quantity_debit = last_item.get('quantity') if last_item else 0
+        
     #Total
     overall_total_quantity_in =  total_quantity_inv + total_quantity_recurinv - total_quantity_debit
 
-
-    # Calculate total quantity from the 'recubills' table
-    total_quantity_recubills = recubills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+ # Fetch quantity
+    last_item = recubills.last()
+    total_quantity_recubills = last_item.get('quantity') if last_item else 0
     
-    # Calculate total quantity from the 'purchasebillitems' table
-    total_quantity_bills = bills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    last_item = bills.last()
+    total_quantity_bills= last_item.get('quantity') if last_item else 0
     
-    # Calculate total quantity from the 'credititem' table
-    total_quantity_credit = credit.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-
-
-    # Calculate the overall total quantity
+    last_item = credit.last()
+    total_quantity_credit = last_item.get('quantity') if last_item else 0
+        
+    #Total
     overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
+
+    # # Calculate total quantity from the 'recubills' table
+    # total_quantity_recubills = recubills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
     
-    print(type(overall_total_quantity))
+    # # Calculate total quantity from the 'purchasebillitems' table
+    # total_quantity_bills = bills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+    
+    # # Calculate total quantity from the 'credititem' table
+    # total_quantity_credit = credit.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+
+    # # Calculate the overall total quantity
+    # overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
+    
+   # print(type(overall_total_quantity))
     
     items = AddItem.objects.all()
     print(items)
@@ -9993,58 +10008,6 @@ def inventory_summary(request):
     return render(request, 'inventory_summary.html', context)
 
 
-# from django.db.models import Sum
-# from collections import defaultdict
-
-# def inventory_summary(request, item_name=None):
-#     company = company_details.objects.get(user=request.user)
-
-#     inv = invoice_item.objects.all()
-#     recubills = recurring_bills_items.objects.all()
-#     bills = PurchaseBillItems.objects.all()
-#     credit = Credititem.objects.all()
-#     recurinv = recur_itemtable.objects.all()
-#     debit = Vendor_Credits_Bills_items_bills.objects.all()
-#     items = AddItem.objects.all()
-
-
-#     # Create a dictionary to store overall total quantity for each item
-#     overall_total_quantity_in_dict = defaultdict(float)
-
-#     # Calculate overall total quantity for each item and update the dictionary
-#     for item in items:
-#         total_quantity_inv = inv.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-#         total_quantity_recurinv = recurinv.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-#         total_quantity_debit = debit.filter(item=item).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-
-#         overall_total_quantity_in_item = total_quantity_inv + total_quantity_recurinv - total_quantity_debit
-#         overall_total_quantity_in_dict[item.name] = overall_total_quantity_in_item
-
-#     # Update the stock in hand for each item
-#     for item in items:
-#         stock_in_hand = item.stock + item_quantities.get(item.name, 0) - overall_total_quantity_in_dict.get(item.name, 0)
-#         item.stock = format(stock_in_hand, '.2f')
-#         print(f"{item.name}: {stock_in_hand}")
-
-#     # Filter items based on the specified item_name
-#     if item_name:
-#         items = items.filter(name=item_name)
-
-#     context = {
-#         'items': items,
-#         'inv': inv,
-#         'bills': bills,
-#         'credit': credit,
-#         'recubills': recubills,
-#         'company': company,
-#         'total_quantity': overall_total_quantity,
-#         'total_quantity_in': overall_total_quantity_in,
-#         'item_quantities': item_quantities,
-#         'overall_total_quantity_in_dict': overall_total_quantity_in_dict,  # Pass the dictionary to the template
-#         'selected_item_name': item_name,  # Pass the selected item name to the template
-#     }
-
-#     return render(request, 'inventory_summary.html', context)
 
 
 
