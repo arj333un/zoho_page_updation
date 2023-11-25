@@ -3098,7 +3098,8 @@ def active_status(request,id):
 
 def viewpricelist(request):
     company = company_details.objects.get(user = request.user)
-    view=Pricelist.objects.all() 
+    user=User.objects.get(username=request.user)
+    view=Pricelist.objects.filter(user_id=user.id) 
                                                                                                                                                                                                                                                                                                                           
     return render(request,'view_price_list.html',{'view':view,'company':company})
     
@@ -9940,26 +9941,34 @@ def inventory_summary(request):
 
     # Fetch quantity
     last_item = inv.last()
-    total_quantity_inv = last_item.get('quantity') if last_item else 0
-    
+    total_quantity_inv = last_item.quantity if last_item else 0
+
     last_item = recurinv.last()
-    total_quantity_recurinv = last_item.get('quantity') if last_item else 0
-    
+    total_quantity_recurinv = last_item.quantity if last_item else 0
+
     last_item = debit.last()
-    total_quantity_debit = last_item.get('quantity') if last_item else 0
+    total_quantity_debit = last_item.quantity if last_item else 0
+
+    print(total_quantity_inv)
+    print(total_quantity_recurinv)
+    print(total_quantity_debit)
+
         
     #Total
     overall_total_quantity_in =  total_quantity_inv + total_quantity_recurinv - total_quantity_debit
-
+    print(overall_total_quantity_in)
  # Fetch quantity
     last_item = recubills.last()
-    total_quantity_recubills = last_item.get('quantity') if last_item else 0
+    total_quantity_recubills = last_item.quantity if last_item else 0
     
     last_item = bills.last()
-    total_quantity_bills= last_item.get('quantity') if last_item else 0
+    total_quantity_bills= last_item.quantity if last_item else 0
     
     last_item = credit.last()
-    total_quantity_credit = last_item.get('quantity') if last_item else 0
+    total_quantity_credit = last_item.quantity if last_item else 0
+    
+    print(total_quantity_recubills)
+    
         
     #Total
     overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
@@ -9981,9 +9990,98 @@ def inventory_summary(request):
     
     items = AddItem.objects.all()
     print(items)
+    
     for i in items :
-        print(type(i.stock))
-        stock_in_hand = i.stock + int(overall_total_quantity) - int(overall_total_quantity_in)
+        
+        i.qty=0
+        i.qty1=0
+        i.qty2=0
+        try:
+            q=Vendor_Credits_Bills_items_bills.objects.filter(item=i.Name)
+          
+            for j in q:
+                
+               
+                i.qty=i.qty+j.quantity
+   
+
+        except:
+            pass
+          
+        try:
+            q1=recur_itemtable.objects.filter(iname=i.Name)
+            for j in q1:
+                
+               
+                i.qty1=i.qty1+j.quantity
+           
+          
+
+        except:
+            
+            i.qty1=0
+           
+        try:
+            q2=invoice_item.objects.filter(product=i.Name)
+
+            for j in q2:
+                
+               
+                i.qty2=i.qty2+j.quantity
+
+        except:
+          
+            i.qty2=0
+        i.qty_total=abs(i.qty1+i.qty2-i.qty)
+        print(i.Name,"=",i.qty_total)
+        
+        
+        
+        i.rqty=0
+        i.rqty1=0
+        i.rqty2=0
+        try:
+            q=PurchaseBillItems.objects.filter(item_name=i.Name)
+          
+            for j in q:
+                
+               
+                i.rqty=i.rqty+j.quantity
+   
+
+        except:
+            pass
+          
+        try:
+            q1=Credititem.objects.filter(hsn=i.hsn)
+            for j in q1:
+                
+               
+                i.rqty1=i.rqty1+j.quantity
+           
+          
+
+        except:
+            
+            i.rqty1=0
+           
+        try:
+            q2=recurring_bills_items.objects.filter(item=i.Name)
+
+            for j in q2:
+                
+               
+                i.rqty2=i.rqty2+j.quantity
+
+        except:
+          
+            i.rqty2=0
+        i.rqty_total=abs(i.rqty1+i.rqty2-i.rqty)
+        print(i.Name,"=",i.rqty_total)
+        
+        
+        # print(type(i.stock))
+        stock_in_hand = i.stock + i.rqty_total - i.qty_total
         # i.stock = stock_in_hand  
         i.stock = format(stock_in_hand, '.2f')
         print(stock_in_hand)

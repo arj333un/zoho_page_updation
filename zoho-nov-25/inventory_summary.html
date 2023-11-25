@@ -134,12 +134,14 @@
     
             <td style="color: white;"></td>
 
-        
-            <td style="color: white;">{{ total_quantity_in }}</td>
+          
+
+            <td style="color: white;">{{ i.qty_total }}</td>
        
 
-        
-            <td style="color: white;">{{ total_quantity }}</td>
+            
+
+            <td style="color: white;">{{ i.rqty_total }}</td>
         
 
             <td style="color: white;">{{i.stock|floatformat:2}}</td>
@@ -147,12 +149,14 @@
             <td style="color: white;"></td>
 
             <!--<td style="color: white;">0</td>-->
-            
+            {% endfor %} 
+           
+
           
         </tr>
         
         
-        {% endfor %} 
+       
 
        
       </tbody>
