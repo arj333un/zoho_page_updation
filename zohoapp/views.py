@@ -3027,7 +3027,8 @@ def payment_term_for_invoice(request):
         
 def addprice(request):
     company=company_details.objects.get(user=request.user)
-    add=AddItem.objects.all()
+    user=User.objects.get(username=request.user)
+    add=AddItem.objects.filter(user_id=user.id) 
     return render(request,'addprice_list.html',{'add':add,'company':company})
     
     
@@ -3105,7 +3106,8 @@ def viewpricelist(request):
     
 def viewlist(request,id):
     company = company_details.objects.get(user = request.user)
-    items=Pricelist.objects.all()
+    user=User.objects.get(username=request.user)
+    items=Pricelist.objects.filter(user_id=user.id)
     product=Pricelist.objects.get(id=id)
     print(product.id)
     
@@ -9987,8 +9989,9 @@ def inventory_summary(request):
     # overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
     
    # print(type(overall_total_quantity))
-    
-    items = AddItem.objects.all()
+   
+    user=User.objects.get(username=request.user)
+    items = AddItem.objects.filter(user_id=user.id)
     print(items)
     
     for i in items :
@@ -10081,9 +10084,9 @@ def inventory_summary(request):
         
         
         # print(type(i.stock))
-        stock_in_hand = i.stock + i.rqty_total - i.qty_total
-        # i.stock = stock_in_hand  
+        stock_in_hand = abs(int(i.stock) + int(i.rqty_total) - int(i.qty_total))
         i.stock = format(stock_in_hand, '.2f')
+       
         print(stock_in_hand)
 
 
