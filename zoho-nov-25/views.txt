@@ -1,16 +1,131 @@
-def viewlist(request,id):
-    company = company_details.objects.get(user = request.user)
+def inventory_summary(request):
+    
+    company = company_details.objects.get(user=request.user)
+    
+        
+    inv = invoice_item.objects.all()
+    recubills = recurring_bills_items.objects.all()
+    bills = PurchaseBillItems.objects.all()
+    credit = Credititem.objects.all()
+    recurinv = recur_itemtable.objects.all()
+    debit = Vendor_Credits_Bills_items_bills.objects.all()
+    
+
+
+   
+   
     user=User.objects.get(username=request.user)
-    items=Pricelist.objects.filter(user_id=user.id)
-    product=Pricelist.objects.get(id=id)
-    print(product.id)
+    items = AddItem.objects.filter(user_id=user.id)
+    print(items)
     
+    for i in items :
+        
+        i.qty=0
+        i.qty1=0
+        i.qty2=0
+        try:
+            q=Vendor_Credits_Bills_items_bills.objects.filter(item=i.Name)
+          
+            for j in q:
+                
+               
+                i.qty=i.qty+j.quantity
+   
+
+        except:
+            pass
+          
+        try:
+            q1=recur_itemtable.objects.filter(iname=i.Name)
+            for j in q1:
+                
+               
+                i.qty1=i.qty1+j.quantity
+           
+          
+
+        except:
+            
+            i.qty1=0
+           
+        try:
+            q2=invoice_item.objects.filter(product=i.Name)
+
+            for j in q2:
+                
+               
+                i.qty2=i.qty2+j.quantity
+
+        except:
+          
+            i.qty2=0
+        i.qty_total=abs(i.qty1+i.qty2-i.qty)
+        print(i.Name,"=",i.qty_total)
+        
+        
+        
+        i.rqty=0
+        i.rqty1=0
+        i.rqty2=0
+        try:
+            q=PurchaseBillItems.objects.filter(item_name=i.Name)
+          
+            for j in q:
+                
+               
+                i.rqty=i.rqty+j.quantity
+   
+
+        except:
+            pass
+          
+        try:
+            q1=Credititem.objects.filter(hsn=i.hsn)
+            for j in q1:
+                
+               
+                i.rqty1=i.rqty1+j.quantity
+           
+          
+
+        except:
+            
+            i.rqty1=0
+           
+        try:
+            q2=recurring_bills_items.objects.filter(item=i.Name)
+
+            for j in q2:
+                
+               
+                i.rqty2=i.rqty2+j.quantity
+
+        except:
+          
+            i.rqty2=0
+        i.rqty_total=abs(i.rqty1+i.rqty2-i.rqty)
+        print(i.Name,"=",i.rqty_total)
+        
+        
+        # print(type(i.stock))
+        stock_in_hand = abs(int(i.stock) + int(i.rqty_total) - int(i.qty_total))
+        i.stock = format(stock_in_hand, '.2f')
+       
+        print(stock_in_hand)
+
+
+
     
-    context={
-       "allproduct":items,
-       "product":product,
-       'company':company,
-      
+
+    context = {
+        'items': items,
+        'inv': inv,
+        'bills':bills,
+        'credit':credit,
+        'recubills': recubills,
+        'company': company,
+       
+
     }
-    
-    return render(request,'list.html',context)
+
+    return render(request, 'inventory_summary.html', context)

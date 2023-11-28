@@ -86,11 +86,11 @@ function showSelect1Div() {
                 </div>
                 <div class="row mb-4">
                   <div class="col-sm-2"><label for="estimate_number" style="margin-left: 10px;">Tax preference</label></div>
-                  <div class="col-sm-10"><input type="radio" id="tax1" name="types" onclick="showSelect3And4Divs();" class="" style="color: aliceblue;" value="Markup or Markdown the item rates by a percentage" {% if editpl.tax == "mark" %} checked {% endif %}>&nbsp;&nbsp;&nbsp;&nbsp;<label>Markup or Markdown the item
+                  {% comment %} <div class="col-sm-10"><input type="radio" id="tax1" name="types" onclick="showSelect3And4Divs();" class="" style="color: aliceblue;" value="Markup or Markdown the item rates by a percentage" {% if editpl.tax == "mark" %} checked {% endif %}>&nbsp;&nbsp;&nbsp;&nbsp;<label>Markup or Markdown the item
                     rates by a percentage</label>
-                  </div>
+                  </div> {% endcomment %}
                   <div class=" col-sm-10">
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   
                     <input type="radio" id="tax2" name="types" onclick="showSelect1Div();" class=""  value="enter" {% if editpl.tax == "enter" %} checked {% endif %}>&nbsp;&nbsp;&nbsp;&nbsp;<label>Enter the rate individually
                       for each item
                     </div><br></label>
@@ -131,7 +131,7 @@ function showSelect1Div() {
                       </table>
                     </div>
                     </div>
-                    <div id="select3_div" class="row mb-4" style="margin-left: 10px;">
+                    {% comment %} <div id="select3_div" class="row mb-4" style="margin-left: 10px;">
                       <label class="text-white mt-5" >
                         Percentage *
                       </label>
@@ -168,7 +168,7 @@ function showSelect1Div() {
             
                       </select>
                       
-                    </div>
+                    </div> {% endcomment %}
                     <br><br><br>
                     <input type="submit" id="sub"  class="btn text-white" style="background-color: rgb(210, 132, 30); width:300px ; "
                      value="Save">  

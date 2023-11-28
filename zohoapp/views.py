@@ -3123,6 +3123,7 @@ def viewlist(request,id):
 
 def editlist(request,id):
     company = company_details.objects.get(user = request.user)
+    
     editpl=Pricelist.objects.get(id=id)
     sam=Sample_table.objects.filter(pl=id)
     return render(request,'edit_pricelist.html',{'editpl':editpl,'sam':sam,"company":company})
@@ -9941,54 +9942,7 @@ def inventory_summary(request):
     
 
 
-    # Fetch quantity
-    last_item = inv.last()
-    total_quantity_inv = last_item.quantity if last_item else 0
-
-    last_item = recurinv.last()
-    total_quantity_recurinv = last_item.quantity if last_item else 0
-
-    last_item = debit.last()
-    total_quantity_debit = last_item.quantity if last_item else 0
-
-    print(total_quantity_inv)
-    print(total_quantity_recurinv)
-    print(total_quantity_debit)
-
-        
-    #Total
-    overall_total_quantity_in =  total_quantity_inv + total_quantity_recurinv - total_quantity_debit
-    print(overall_total_quantity_in)
- # Fetch quantity
-    last_item = recubills.last()
-    total_quantity_recubills = last_item.quantity if last_item else 0
-    
-    last_item = bills.last()
-    total_quantity_bills= last_item.quantity if last_item else 0
-    
-    last_item = credit.last()
-    total_quantity_credit = last_item.quantity if last_item else 0
-    
-    print(total_quantity_recubills)
-    
-        
-    #Total
-    overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
-
-    # # Calculate total quantity from the 'recubills' table
-    # total_quantity_recubills = recubills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-    
-    # # Calculate total quantity from the 'purchasebillitems' table
-    # total_quantity_bills = bills.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-    
-    # # Calculate total quantity from the 'credititem' table
-    # total_quantity_credit = credit.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
-
-
-    # # Calculate the overall total quantity
-    # overall_total_quantity =  total_quantity_recubills + total_quantity_bills - total_quantity_credit
-    
-   # print(type(overall_total_quantity))
+   
    
     user=User.objects.get(username=request.user)
     items = AddItem.objects.filter(user_id=user.id)
@@ -10100,9 +10054,7 @@ def inventory_summary(request):
         'credit':credit,
         'recubills': recubills,
         'company': company,
-        'total_quantity': overall_total_quantity,
-        'total_quantity_in': overall_total_quantity_in,
-        
+       
 
     }
 

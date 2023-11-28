@@ -65,8 +65,8 @@ function showSelect1Div() {
                 </div>
                 <div class="row mb-4">
                     <div class="col-sm-2"><label for="estimate_number" style="margin-left: 10px;">Type</label></div>
-                    <div class="col-sm-10"><input type="radio" name="type" class="custom-radio" style="color:rgb(177, 54, 54);" value="sales">&nbsp;&nbsp;<label>Sales</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="type" class="custom-radio" value="purchase" style="color: rgb(255, 255, 255);">&nbsp;&nbsp;<label>Purchase</label>
+                    <div class="col-sm-10"><input type="radio" name="type" onclick="updatePrice('sales')" class="custom-radio" style="color:rgb(177, 54, 54);" value="sales">&nbsp;&nbsp;<label>Sales</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="type" onclick="updatePrice('purchase')" class="custom-radio" value="purchase" style="color: rgb(255, 255, 255);">&nbsp;&nbsp;<label>Purchase</label>
                 </div>
                 </div>
                 <div class="row mb-4">
@@ -106,8 +106,11 @@ function showSelect1Div() {
                         <tbody style="color: rgb(20, 20, 20);">
                           {% for a in add %}
                           <tr>
-                            <td><input type="text" class="form-control text-black" name='iname[]' value="{{a.Name}}"></td>
-                            <td><input type="number" class="form-control text-black" name='iprice[]' value="{{a.p_price}}"></td>
+                            <td><input type="text" class="form-control text-black" name='iname[]'  value="{{a.Name}}"></td>
+                            <td>
+                              <input type="number" class="form-control text-black" name="iprice[]" id="priceInput" value="{% if radio_button_value == 'purchase' %}{{ a.p_price }}{% else %}{{ a.s_price }}{% endif %}">
+                            </td>                                     
+                
                             <td><input type="number" class="form-control text-black" name='custom[]' value="0.0"></td>
                           </tr>
                           {% endfor %}
@@ -196,8 +199,30 @@ function showSelect1Div() {
     crossorigin="anonymous"></script>
 
 
-
-
+    <script>
+      // Assuming you have radio buttons with the IDs "salesRadio" and "purchaseRadio"
+      var salesRadio = document.getElementById('salesRadio');
+      var purchaseRadio = document.getElementById('purchaseRadio');
+      var priceInput = document.getElementById('priceInput');
+    
+      salesRadio.addEventListener('click', function() {
+        priceInput.value = '{{ a.s_price }}';
+      });
+    
+      purchaseRadio.addEventListener('click', function() {
+        priceInput.value = '{{ a.p_price }}';
+      });
+    </script>  
+    <script>
+      function updatePrice(type) {
+        var priceInput = document.getElementById('priceInput');
+        if (type === 'sales') {
+          priceInput.value = '{{ a.s_price }}';
+        } else if (type === 'purchase') {
+          priceInput.value = '{{ a.p_price }}';
+        }
+      }
+    </script>
 
 
 
