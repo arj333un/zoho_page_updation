@@ -10,10 +10,16 @@ function showSelect1Div() {
   var select3Div = document.getElementById("select3_div");
   var select4Div = document.getElementById("select4_div");
   var enterRateRadio = document.getElementById("tax2");
+  var salesTable = document.getElementById("salesTable");
+  var purchaseTable = document.getElementById("purchaseTable");
+  var sampleTable = document.getElementById("sampleTable");
 
   if (enterRateRadio.checked) {
     select1Div.style.display = "block";
     cust.style.display="block"
+    sampleTable.style.display = "table";
+    salesTable.style.display = "none";
+    purchaseTable.style.display = "none";
     select3Div.style.display = "none"; // Hide select3_div
     select4Div.style.display = "none"; // Hide select4_div
   } else {
@@ -60,13 +66,13 @@ function showSelect1Div() {
                 <div class="row mb-4 border-top pt-5">
                     <div class="col-sm-2"><label for="customer_name" style="margin-left: 10px;">Name*</label></div>
                     <div class="col-sm-10">
-                        <input type="text" name="name" style="width: 50%; height: 35px;">
+                        <input type="text" id="name" name="name" style="width: 50%; height: 35px;">
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-sm-2"><label for="estimate_number" style="margin-left: 10px;">Type</label></div>
-                    <div class="col-sm-10"><input type="radio" name="type" onclick="updatePrice('sales')" class="custom-radio" style="color:rgb(177, 54, 54);" value="sales">&nbsp;&nbsp;<label>Sales</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                      <input type="radio" name="type" onclick="updatePrice('purchase')" class="custom-radio" value="purchase" style="color: rgb(255, 255, 255);">&nbsp;&nbsp;<label>Purchase</label>
+                    <div class="col-sm-10"><input type="radio" name="type" onclick="abc(this)" class="custom-radio" style="color:rgb(177, 54, 54);" value="sales">&nbsp;&nbsp;<label>Sales</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input type="radio" name="type" onclick="abc(this)" class="custom-radio" value="purchase" style="color: rgb(255, 255, 255);">&nbsp;&nbsp;<label>Purchase</label>
                 </div>
                 </div>
                 <div class="row mb-4">
@@ -94,8 +100,38 @@ function showSelect1Div() {
                       <h2 style="margin-left: 10px;">Customize Item Rates in Bulk</h2><br><br>
                       <h5 style="margin-left: 20px;">Add custom rates for each item to be saved as a price list</h5><br>
                     
-                    
-                      <table class="table table-hover">
+                      <table class="table table-hover" id="sampleTable">
+                        <thead>
+                          <tr class="table-primary">
+                            <th scope="col">Item details</th>
+                            <th scope="col">Standard Rate(INR)</th>
+                            <th scope="col">Custom Rate(INR)</th>
+                          </tr>
+                        </thead>
+                        
+                      </table>
+                      <table class="table table-hover" id="purchaseTable">
+                        <thead>
+                          <tr class="table-primary">
+                            <th scope="col">Item details</th>
+                            <th scope="col">Standard Rate(INR)</th>
+                            <th scope="col">Custom Rate(INR)</th>
+                          </tr>
+                        </thead>
+                        <tbody style="color: rgb(20, 20, 20);">
+                          {% for a in add %}
+                          <tr>
+                            <td><input type="text" class="form-control text-black" name='iname[]'  value="{{a.Name}}"></td>
+                            <td>
+                              <input type="number" class="form-control text-black" name="iprice[]" id="priceInput" value="{% if radio_button_value == 'purchase' %}{{ a.p_price }}{% else %}{{ a.p_price }}{% endif %}">
+                            </td>                                     
+                
+                            <td><input type="number" class="form-control text-black" name='custom[]' value="0.0"></td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <table class="table table-hover" id="salesTable">
                         <thead>
                           <tr class="table-primary">
                             <th scope="col">Item details</th>
@@ -216,11 +252,38 @@ function showSelect1Div() {
     <script>
       function updatePrice(type) {
         var priceInput = document.getElementById('priceInput');
+        consloe.log(priceInput.value);
         if (type === 'sales') {
           priceInput.value = '{{ a.s_price }}';
+          consloe.log
         } else if (type === 'purchase') {
           priceInput.value = '{{ a.p_price }}';
         }
+      }
+    </script>
+    <script>
+      function abc(radioButton) {
+        var type1=radioButton.value
+       
+       
+            
+            var salesTable = document.getElementById("salesTable");
+            var purchaseTable = document.getElementById("purchaseTable");
+            var sampleTable = document.getElementById("sampleTable");
+
+            // Check the selected option and toggle table visibility
+            if (type1 === "sales") {
+              salesTable.style.display = "table";
+              purchaseTable.style.display = "none";
+              sampleTable.style.display = "none";
+            } else if (type1 === "purchase") {
+              salesTable.style.display = "none";
+              purchaseTable.style.display = "table";
+              sampleTable.style.display = "none";
+            }
+          
+       
+        
       }
     </script>
 
