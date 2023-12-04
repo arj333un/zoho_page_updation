@@ -3133,7 +3133,6 @@ def editpage(request,id):
         edit=Pricelist.objects.get(id=id)
         edit.name=request.POST['name']
         edit.description=request.POST['desc']
-        edit.mark=request.POST['mark']
         edit.percentage=request.POST['per']
         print(request.POST['per'])
         edit.tax=request.POST['types']
