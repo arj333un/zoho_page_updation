@@ -348,7 +348,7 @@
                             <option value="" disabled class="btn btn-dark text-light highlight-account-type"><b>{{ account_type }}</b></option>
                             {% for account in accounts %}
                             {% if account.Account_type == account_type %}
-                            {% comment %} <option value="{{account.id}}">{{ account.Account_name }}</option> {% endcomment %}
+                            <option value="{{account.id}}">{{ account.Account_name }}</option>
                             {% endif %}
                             {% endfor %}
                             {% endfor %}

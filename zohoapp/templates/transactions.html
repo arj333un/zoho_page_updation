@@ -97,8 +97,8 @@
       <table class="table table-borderless" id="mytable" >
         <thead>
           <tr style="text-align: center;">
-            <th style="color: rgb(214, 141, 5);">Name</th>
-            <th style="color: rgb(214, 141, 5);" >Quantity</th>
+            <th style="color:gold;">Name</th>
+            <th style="color:gold;" >HSN</th>
           </tr>
         </thead>
         <tbody id="tableBody">
@@ -107,7 +107,7 @@
 
           
                   <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.Name }}</a></td>
-                  <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.stock }}</a></td>
+                  <td><a class="text-white" href="{% url 'transaction' v.id %}">{{ v.hsn }}</a></td>
                 
           </tr>
           {% endfor %}
@@ -116,114 +116,58 @@
     </div>
 
 
-    <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style="background-color:#191C24; max-height: 100vw; border-radius: 10px; ">
+    <div class="overview col-9 col-lg-9 col-md-10  col-sm-10 py-2" style=" background: #ffddb0; max-height: 100vw; border-radius: 10px; ">
     <!-- <div class="col-md-9" style="margin-left: 21rem;" data-spy="scroll" data-target="#navbar-example2" data-offset="0"> -->
           <div class="row" style="position: relative;">
             <div class="container">
               <div class="row" style="margin-top: 2.6rem;">
                 <div class="col " style="margin-top: -4.2rem;padding-right: 150px;">
-                  <a class="" style="font-size: 1.5rem; margin-left: 4rem; margin-top: -2rem; color: rgb(214, 141, 5);">
+                  <a class="" style="font-size: 1.5rem; margin-left: 4rem; margin-top: -2rem; color: black;">
                     <h3>{{ product.Name }}</h3>
                   </a>
                   <hr style="width: 72rem;">
-                  <p style="margin-top: 1.5rem; color: rgb(214, 141, 5);">SALE PRICE </p>
-                  <p style="margin-top: -2.2rem; margin-left: 13rem; color: #01F9C6;">: {{ product.s_price }}(incl)</p>
-                  <p style="margin-top: -1rem; color: rgb(214, 141, 5);">PURCHASE PRICE </p>
-                  <p style="margin-top: -2.3rem; margin-left: 13rem; color: #01F9C6;">: {{ product.p_price }}(excl)</p>
-                  <p style="margin-top: -1rem; color: rgb(214, 141, 5);">MINIMUM STOCK TO MAINTAIN </p>
-                  <p style="margin-top: -2.3rem; margin-left: 13rem; color: #01F9C6;">: {{ product.minimum_stock }} </p>
-                  <p style="margin-top: -3.9rem; margin-left: 30rem; color: rgb(214, 141, 5);">STOCK QUANTITY </p>
-                  <p style="margin-top: -2.3rem; margin-left: 38rem; color: #01F9C6;">: {{ product.stock }}</p>
-                  <p style="margin-top: -1rem; margin-left: 30rem; color: rgb(214, 141, 5);">STOCK VALUE </p>
-                  <p style="margin-top: -2.3rem; margin-left: 38rem; color: #01F9C6;">: {{ stock }}</p>
+                  <p style="margin-top: 1.5rem; color: black;">SALE PRICE </p>
+                  <p style="margin-top: -2.2rem; margin-left: 13rem; color: black;">: {{ product.s_price }}(incl)</p>
+                  <p style="margin-top: -1rem; color: black;">PURCHASE PRICE </p>
+                  <p style="margin-top: -2.3rem; margin-left: 13rem; color: black;">: {{ product.p_price }}(excl)</p>
+                  <p style="margin-top: -1rem; color: black;">MINIMUM STOCK TO MAINTAIN </p>
+                  <p style="margin-top: -2.3rem; margin-left: 13rem; color: black;">: {{ product.minimum_stock }} </p>
+                  <p style="margin-top: -3.9rem; margin-left: 30rem; color: black;">STOCK QUANTITY </p>
+                  <p style="margin-top: -2.3rem; margin-left: 38rem; color: black;">: {{ product.stock }}</p>
+                  <p style="margin-top: -1rem; margin-left: 30rem; color: black;">STOCK VALUE </p>
+                  <p style="margin-top: -2.3rem; margin-left: 38rem; color: black;">: {{ stock }}</p>
                 </div>
                 <hr style="width: 72.5rem;">
               </div>
             </div>
           </div>
           
-          <div id="tableContainer" style="max-height: 500px; overflow-y: auto; margin-top: 14rem; margin-left: 0.1rem; width: 100%;">
+          <div id="tableContainer" style="max-height: 500px; overflow-y: auto; margin-top: 14rem; margin-left: 0.1rem; width: 100%; background-color: rgb(110, 61, 46);">
             <table class="table text-white" id="dataTable2">
               <thead>
                 <tr>
-                  <th>Type <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option" id="type-filter">
-                        <option value="Estimate">Estimate</option>
-                        <option value="Sales Order">Sales Order</option>
-                        <option value="Recurring Invoice">Recurring Invoice</option>
-                        <option value="Purchase Order">Purchase Order</option>
-                        <option value="Recurring Bills">Recurring Bills</option>
-                        <option value="Invoice">Invoice</option>
-                        <option value="DeliveryChellan">DeliveryChellan</option>
-                        <option value="Bills">Bills</option>
-                        <option value="Expense">Expense</option>
-                      </select><br>
-                      
-                      <button class="apply-filter btn-primary" onclick="applyFilter()">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                      
-                    </div><br>
+                  <th class="text-white">Type 
+                    
                   </th>
                   
-                  <th>Name <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="contains">Contains</option>
-                        <option value="exact-match">Exact Match</option>
-                      </select><br>
-                      <input type="text" class="filter-value"><br>
-                      <button class="apply-filter btn-primary">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                    </div><br>
+                  <th class="text-white">Name 
+                   
                   </th>
                   
-                  <th>Date <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="contains">Contains</option>
-                        <option value="exact-match">Exact Match</option>
-                      </select><br>
-                      <input type="text" class="filter-value"><br>
-                      <button class="apply-filter btn-primary">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                    </div><br>
+                  <th class="text-white">Date 
+                  
                   </th>
                   
-                  <th>Quantity <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="contains">Contains</option>
-                        <option value="exact-match">Exact Match</option>
-                      </select><br>
-                      <input type="text" class="filter-value"><br>
-                      <button class="apply-filter btn-primary">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                    </div><br>
+                  <th class="text-white">Quantity 
+                   
                   </th>
                   
-                  <th>Price/Unit <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="contains">Contains</option>
-                        <option value="exact-match">Exact Match</option>
-                      </select><br>
-                      <input type="text" class="filter-value"><br>
-                      <button class="apply-filter btn-primary">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                    </div><br>
+                  <th class="text-white">Price/Unit 
+                 
                   </th>
                   
-                  <th>Status <i class="fas fa-filter filter-button"></i>
-                    <div class="filter-dropdown">
-                      <select class="filter-option">
-                        <option value="contains">Contains</option>
-                        <option value="exact-match">Exact Match</option>
-                      </select><br>
-                      <input type="text" class="filter-value"><br>
-                      <button class="apply-filter btn-primary">Apply</button>
-                      <button class="clear-filter btn-primary">Clear</button>
-                    </div><br>
+                  <th class="text-white">Status 
+                   
                   </th>
                 </tr>
               </thead>

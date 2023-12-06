@@ -18,9 +18,36 @@
     margin-left: 36rem;
   }
 
+  .abc{
+    
+    display: flex;
+    justify-content: flex-end;
+    margin-right:-100%;
+  }
  
 </style>
+ 
+<div class="abc">
+    
+    <a href="">
+           <button class=" btn btn-outline-info"><i class="fa fa-line-chart" style="background: white; color: rgb(218, 164, 48);font-size:16px;"></i>
+     </a>    </button>&nbsp;&nbsp;
+      
+  <button class="btn btn_print btn-outline-info" style="background: white; color: rgb(218, 164, 48);"><i class="fa fa-print"></i></button>&nbsp;&nbsp;
 
+   
+      <button class="btn btn_pdf btn-outline-info" id="export-pdf-button" style="background: white; color: rgb(218, 164, 48);">  <i class="fa fa-file-pdf"></i>    
+    </button>&nbsp;&nbsp;
+     <button class=" btn btn-outline-info" id="export-excel-button" onclick="exportAsExcel()"  class="dropdown-item"  style="background: white; color: rgb(218, 164, 48);">   <i class="fa fa-file-excel"></i></button>&nbsp;&nbsp;
+     
+ 
+    
+{% comment %} <button class="btn" ><a  href="" class="fa fa-close" style="background: white; color: rgb(218, 164, 48);"></a></button>&nbsp;&nbsp; {% endcomment %}
+</div>
+
+</div>
+</div>
+<br><br>
 <div class="container-fluid">
   <div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
     <div style="height: 600px;overflow-y: scroll;">
@@ -244,11 +271,32 @@ filterItems('all');
   // Attach the search function to the input field's "input" event
   document.getElementById("searchInput").addEventListener("input", searchTable);
   </script>
+  <script>
+    // Function to export table data to Excel
+    function exportAsExcel() {
+      const ws = XLSX.utils.table_to_sheet(document.getElementById('myTable'));
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, 'exported_data.xlsx');
+    }
   
+    // Function to export table data to PDF
+    function exportAsPDF() {
+      const element = document.getElementById('myTable');
+      html2pdf(element);
+    }
+  
+    // Attach export functions to buttons
+    document.getElementById('export-excel-button').addEventListener('click', exportAsExcel);
+    document.getElementById('export-pdf-button').addEventListener('click', exportAsPDF);
+  </script>
+  
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 
 
 {% endblock %}
