@@ -289,10 +289,10 @@
 
 
       <div id="div_godown" class="mx-2 my-4 p-4 "
-        style="background-color: rgba(124, 124, 123, 0.507); height: 600px; overflow-y: scroll;">
+        style="background-color: rgba(124, 124, 123, 0.507); background-color: rgb(110, 61, 46); height: 600px; overflow-y: scroll;">
         
-          <div class="slip p-5 convert_to_pdf bg-light" id="whatToPrint"
-            style="box-shadow: 5px 5px 10px rgb(45, 45, 45);">
+          <div class="slip p-5 convert_to_pdf bg-light"  id="whatToPrint"
+            style="box-shadow: 5px 5px 10px rgb(45, 45, 45); background:#ffddb0;">
             <h4 class="mr-4  text-dark" style="text-align:center;" >{{product.name }}</h4>
             <br>
             <h4 class="mr-4  text-dark" >Type</h4>
@@ -554,7 +554,7 @@
     
 <script>
     function editComment(commentId) {
-        const commentText = $(`#comment-text-${commentId}`).text();
+        const commentText = $(#comment-text-${commentId}).text();
         const editedComment = prompt('Edit the comment:', commentText);
         if (editedComment !== null) {
             // Send the edited comment to the server using AJAX
@@ -568,7 +568,7 @@
                 },
                 success: function () {
                     // Update the comment text on the page
-                    $(`#comment-text-${commentId}`).text(editedComment);
+                    $(#comment-text-${commentId}).text(editedComment);
                 },
                 error: function () {
                     alert('An error occurred while editing the comment.');

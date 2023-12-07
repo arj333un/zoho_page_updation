@@ -211,7 +211,7 @@
             <script>
               function validateSixDigits(field) {
                 // Define the regular expression pattern for exactly six digits
-                var pattern = /^\d{6}$/;
+                var pattern = /^\d{7,}$/;
               
                 // Check if the field matches the pattern
                 return pattern.test(field);
@@ -224,9 +224,9 @@
                 var validationResultDiv = document.getElementById("validationResult");
               
                 if (validateSixDigits(inputValue)) {
-                  validationResultDiv.textContent = "Valid: The field contains exactly six digits.";
+                  validationResultDiv.textContent = "Valid: The field contains six digits.";
                 } else {
-                  validationResultDiv.textContent = "Invalid: The field does not contain exactly six digits.";
+                  validationResultDiv.textContent = "Invalid: The field does not contain six digits.";
                 }
               }
             
@@ -321,7 +321,7 @@
               <div class="form-group row">
                 <label  class="col-sm-2 col-form-label">Description </label>
                 <div class="col-sm-10 col-md-7 col-9 ml-5">
-                  <input required  type="text" name="sel_desc" class="form-control text-black" >
+                  <input  type="text" name="sel_desc" class="form-control text-black" >
                 </div>
               </div>
                                     

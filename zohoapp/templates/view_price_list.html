@@ -32,6 +32,21 @@
   #tr_data:hover{
     background-color: #757575;
   }
+  .modal {
+    margin-top: 5rem;
+    z-index: 1;
+    overflow: scroll;
+  }
+
+  .modal-backdrop {
+    display: none;
+    z-index: 1 !important;
+  }
+
+  .modal-content {
+    margin: 2px auto;
+    z-index: 1 !important;
+  }
 </style>
 
 
@@ -66,7 +81,7 @@
       <div class="col-sm-1 col-md-1 col-lg-1">
         <div class="col-md-1">
           <div class="dropdown">
-            <a class="dropdown-toggle btn btn-secondary text-dark pt-2 pb-2" href="" data-toggle="dropdown">
+            <a class="dropdown-toggle btn btn-secondary text-dark pt-2 pb-2" style="margin-left:-110px;"  data-toggle="dropdown">
               <i style="color: chocolate;" class="fa fa-filter"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -78,6 +93,12 @@
         </div>
       </div>
       <div class="col-sm-5 col-md-2 col-lg-2">
+        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;margin-left:-110px" onclick="reduce_dash()" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn mr-1 pt-2" >
+          <i class="fa fa-file-excel-o p-1"></i>Import
+        </a>
+        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportToExcel()" class="btn btn-outline-warning" >
+          <i class="fa fa-file-excel-o p-1"></i>Export
+        </a>
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" class="btn mr-1 pt-2" href="{% url 'addprice' %}">
           <i class="fa-solid fa fa-plus"></i>New
         </a>
@@ -105,7 +126,7 @@
           {% for v in view %}
           <tr   {% if v.status == 'active' or v.status == 'Active' %}class="active" {% elif v.status == 'inactive' or v.status == 'Inactive' %}class="inactive" {% endif %}>
 
-            <td> <a href="" style="color: white;" >{{v.itemtable.date}}</a></td>
+            <td> <a href="" style="color: white;" >{{v.date}}</a></td>
             <td><a href="{% url 'viewlist' v.id %}"style="color: white;">{{v.name}}</a></td>
             <td><a href="" style="color: white;"> <i class="fa fa-comments " title="{{v.description}}"></i>  </a></td>
             <td><a href="" style="color: white;">{{v.itemtable.type}}</a></td>
@@ -173,6 +194,57 @@
 </tbody>
 
 </table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
+  <div class="modal-dialog">
+    <div style="background-color: rgb(63, 63, 63);width: 40rem;" class="modal-content">
+      <!-- <div class="modal-header">
+        
+      </div> -->
+      <div class="modal-body">
+        <div class="d-flex justify-content-between">
+          <h1 class="modal-title fs-5 " id="exampleModalLabel">Import From Excel</h1>
+          <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        {% comment %} <hr class="mb-3">
+        <label class="text-danger fw-bold pb-2" for="">Fields needed to be filled are</label>
+        <div style="overflow-x: auto;">
+          <table class="table table-bordered border-secondary">
+            <thead>
+              <th class="text-light">NAME</th>
+              <th class="text-light">DESCRIPTION</th>
+              <th class="text-light">TYPE</th>
+              <th class="text-light">ITEM RATE</th>
+              <th class="text-light">TYPE</th>
+              <th class="text-light">ROUNDING</th>
+              <th class="text-light">DETAILS</th>
+              <th class="text-light">STATUS</th>
+            </thead>
+          </table>
+          <p></p>
+        </div>
+        <hr> {% endcomment %}
+        <form action="" method="POST" enctype="multipart/form-data">
+         
+          {% comment %} <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
+              <a class="btn btn-outline-warning ms-5" href="">Download</a>{% endcomment %}
+             <hr> 
+              <input class="form-control bg-dark" type="file" name="excel_file">
+              <hr>
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn bt-lg btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn bt-lg btn-primary">Import</button>
+              </div>
+          </div>
+          <br>
+      </form>
+      <!-- <div class="modal-footer">
+        
+      </div> -->
+    </div>
+  </div>
+</div>
+</div>
 </div>
   </section>
 
@@ -287,6 +359,36 @@
   });
 
 </script>
+
+<script>
+  function exportToExcel() {
+    $('.export_hide').remove()
+    var table = document.querySelector('table');
+    var ws = XLSX.utils.table_to_sheet(table);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'report.xlsx');
+    window.location.href=""
+}
+function call_import()
+{
+  $('#call_input').click()
+}
+$(document).ready(function(){
+  $('#call_input').on('change',function(){
+    $('#click_sbmt').click()
+   
+  })
+})
+ function reduce_dash(){
+   alert($('.form-inline .form-check').Width())
+   if($('.form-inline .form-check').css('width')=== '100%')
+   {
+     $('.mdi-menu').click()
+   }
+ }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>

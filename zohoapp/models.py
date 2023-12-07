@@ -363,16 +363,18 @@ class invoice_item(models.Model):
 
 class Pricelist(models.Model):
     itemtable=models.ForeignKey(AddItem,on_delete=models.CASCADE,null=True)
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    name=models.CharField(max_length=255)
-    types=models.CharField(max_length=255)
-    tax=models.CharField(max_length=255)
-    description=models.CharField(max_length=255)
-    mark=models.CharField(max_length=255)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    name=models.CharField(max_length=255,null=True)
+    types=models.CharField(max_length=255,null=True)
+    tax=models.CharField(max_length=255,null=True)
+    description=models.CharField(max_length=255,null=True)
+    mark=models.CharField(max_length=255,null=True)
     percentage=models.IntegerField()
-    roundoff=models.CharField(max_length=255)
-    currency=models.CharField(max_length=255)
+    roundoff=models.CharField(max_length=255,null=True)
+    currency=models.CharField(max_length=255,null=True)
     status= models.TextField(default='active')
+    date=models.DateTimeField(auto_now_add=True)
+
     
 class Sample_table(models.Model):
     item_name=models.CharField(max_length=255)

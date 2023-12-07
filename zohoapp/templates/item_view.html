@@ -18,36 +18,26 @@
     margin-left: 36rem;
   }
 
-  .abc{
-    
-    display: flex;
-    justify-content: flex-end;
-    margin-right:-100%;
+  .modal {
+    margin-top: 5rem;
+    z-index: 1;
+    overflow: scroll;
   }
+
+  .modal-backdrop {
+    display: none;
+    z-index: 1 !important;
+  }
+
+  .modal-content {
+    margin: 2px auto;
+    z-index: 1 !important;
+  }
+
  
 </style>
  
-<div class="abc">
-    
-    <a href="">
-           <button class=" btn btn-outline-info"><i class="fa fa-line-chart" style="background: white; color: rgb(218, 164, 48);font-size:16px;"></i>
-     </a>    </button>&nbsp;&nbsp;
-      
-  <button class="btn btn_print btn-outline-info" style="background: white; color: rgb(218, 164, 48);"><i class="fa fa-print"></i></button>&nbsp;&nbsp;
 
-   
-      <button class="btn btn_pdf btn-outline-info" id="export-pdf-button" style="background: white; color: rgb(218, 164, 48);">  <i class="fa fa-file-pdf"></i>    
-    </button>&nbsp;&nbsp;
-     <button class=" btn btn-outline-info" id="export-excel-button" onclick="exportAsExcel()"  class="dropdown-item"  style="background: white; color: rgb(218, 164, 48);">   <i class="fa fa-file-excel"></i></button>&nbsp;&nbsp;
-     
- 
-    
-{% comment %} <button class="btn" ><a  href="" class="fa fa-close" style="background: white; color: rgb(218, 164, 48);"></a></button>&nbsp;&nbsp; {% endcomment %}
-</div>
-
-</div>
-</div>
-<br><br>
 <div class="container-fluid">
   <div class="fixed-top" style="top: 7rem; margin-left: 18rem;">
     <div style="height: 600px;overflow-y: scroll;">
@@ -79,7 +69,7 @@
         <div class="col-md-4"></div>
         <div class="col-md-3">
 
-           <div class="btn-group buttonDiv" role="group"  style="margin-top:-3.7rem;display:inline-flex;height:2.9rem;">
+           <div class="btn-group buttonDiv" role="group"  style="margin-top:-3.7rem;display:inline-flex;height:2.9rem;margin-left: 400px;">
             <button id="btnGroupDrop1" type="button" class="btn btn-outline-warning" style="border-radius: 5px;width: 60px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa fa-filter mt-1"></i>
             </button>
@@ -88,10 +78,18 @@
               <a class="dropdown-item text-white" href="#" id="filterActiveButton">Active</a>
               <a class="dropdown-item text-white" href="#" id="filterInactiveButton">Inactive</a>
             </div>
-            <a style="border: 1px solid; border-radius: 5px; height: 2.9rem; display: flex; align-items: center;margin-left: 20px;" class="btn btn-outline-warning" href="{% url 'additem' %}">
-              <i class="fa fa-plus" style="font-size: large;"></i>
-              <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center">New</span>
+            <a style="border: 1px solid; border-radius: 5px; height: 2.9rem; display: flex; align-items: center;margin-left: 10px;" onclick="reduce_dash()" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-warning"  href="">
+              <i class="fa fa-file-excel-o p-1" style="font-size: large;"></i>
+              <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center">Import</span>
           </a>
+          <a style="border: 1px solid; border-radius: 5px; height: 2.9rem; display: flex; align-items: center;margin-left: 10px;" onclick="exportToExcel()"0 class="btn btn-outline-warning" >
+            <i class="fa fa-file-excel-o p-1" style="font-size: large;"></i>
+            <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center">Export</span>
+        </a>
+        <a style="border: 1px solid; border-radius: 5px; height: 2.9rem; display: flex; align-items: center;margin-left: 10px;" class="btn btn-outline-warning" href="{% url 'additem' %}">
+          <i class="fa fa-plus" style="font-size: large;"></i>
+          <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center"></span>
+      </a>
           </div>
         </div>
       </div>
@@ -102,10 +100,9 @@
             <thead>
               <tr>
                 <th style="text-align: center;">NAME</th>
-                <th style="text-align: center;">DESCRIPTION</th>
+                <th style="text-align: center;">HSN/SAC</th>
                 <th style="text-align: center;">SALES RATE</th>
                 <th style="text-align: center;">PURCHASE RATE</th>
-                <th style="text-align: center;">HSN/SAC</th>
                 <th style="text-align: center;">STOCK ON INVENTORY</th>
                 <th style="text-align: center;">USAGE UNIT</th>
                 <th style="text-align: center;">STATUS</th>
@@ -116,10 +113,9 @@
                 <tr id="over" class='clickable-row' data-href="detail/{{ v.id }}" data-status="{{ v.satus }}">
                   <td style="text-align: center;">{{ v.Name }}</td>
                   <!-- <td style="text-align: center;" onclick="location.href ='' " > {{v.Name}}</td> -->
-                  <td style="text-align: center;">{{ v.s_desc }}</td>
+                  <td style="text-align: center;">{{ v.hsn }}</td>
                   <td style="text-align: center;">{{ v.s_price }}</td>
                   <td style="text-align: center;">{{ v.p_price }}</td>
-                  <td style="text-align: center;">{{ v.hsn }}</td>
                   <td style="text-align: center;">{{ v.stock }}</td>
                   <td style="text-align: center;">{{ v.unit.unit }}</td>
                   <td style="text-align: center;">{{ v.satus }}</td>
@@ -127,12 +123,58 @@
               {% endfor %}
             </tbody>
           </table>
+        <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
+      <div class="modal-dialog">
+        <div style="background-color: rgb(63, 63, 63);width: 40rem;" class="modal-content">
+          <!-- <div class="modal-header">
+            
+          </div> -->
+          <div class="modal-body">
+            <div class="d-flex justify-content-between">
+              <h1 class="modal-title fs-5 " id="exampleModalLabel">Import From Excel</h1>
+              <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {% comment %} <hr class="mb-3">
+            <label class="text-danger fw-bold pb-2" for="">Fields needed to be filled are</label>
+            <div style="overflow-x: auto;">
+              <table class="table table-bordered border-secondary">
+                <thead>
+                  <th class="text-light">NAME</th>
+                  <th class="text-light">DESCRIPTION</th>
+                  <th class="text-light">SALES RATE</th>
+                  <th class="text-light">PURCHASE RATE</th>
+                  <th class="text-light">HSN/SAC</th>
+                  <th class="text-light">STOCK ON INVENTORY</th>
+                  <th class="text-light">USAGE UNIT</th>
+                  <th class="text-light">STATUS</th>
+                </thead>
+              </table>
+              <p></p>
+            </div>
+            <hr> {% endcomment %}
+            <form action="" method="POST" enctype="multipart/form-data">
+              {% comment %} {% csrf_token %}
+              <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
+                  <a class="btn btn-outline-warning ms-5" href="">Download</a> {% endcomment %}
+                 <hr>
+                  <input class="form-control bg-dark" type="file" name="excel_file">
+                  <hr>
+                  <div class="d-flex justify-content-end">
+                    <button type="button" class="btn bt-lg btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn bt-lg btn-primary">Import</button>
+                  </div>
+              </div>
+              <br>
+          </form>
+          <!-- <div class="modal-footer">
+            
+          </div> -->
         </div>
       </div>
     </div>
-  </div>
 </div>
-
+ 
 
 <script>
   jQuery(document).ready(function($) {
@@ -272,25 +314,33 @@ filterItems('all');
   document.getElementById("searchInput").addEventListener("input", searchTable);
   </script>
   <script>
-    // Function to export table data to Excel
-    function exportAsExcel() {
-      const ws = XLSX.utils.table_to_sheet(document.getElementById('myTable'));
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-      XLSX.writeFile(wb, 'exported_data.xlsx');
-    }
-  
-    // Function to export table data to PDF
-    function exportAsPDF() {
-      const element = document.getElementById('myTable');
-      html2pdf(element);
-    }
-  
-    // Attach export functions to buttons
-    document.getElementById('export-excel-button').addEventListener('click', exportAsExcel);
-    document.getElementById('export-pdf-button').addEventListener('click', exportAsPDF);
-  </script>
-  
+  function exportToExcel() {
+    $('.export_hide').remove()
+    var table = document.querySelector('table');
+    var ws = XLSX.utils.table_to_sheet(table);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'report.xlsx');
+    window.location.href=""
+}
+function call_import()
+{
+  $('#call_input').click()
+}
+$(document).ready(function(){
+  $('#call_input').on('change',function(){
+    $('#click_sbmt').click()
+   
+  })
+})
+ function reduce_dash(){
+   alert($('.form-inline .form-check').Width())
+   if($('.form-inline .form-check').css('width')=== '100%')
+   {
+     $('.mdi-menu').click()
+   }
+ }
+</script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
