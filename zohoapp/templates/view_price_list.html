@@ -99,6 +99,9 @@
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportToExcel()" class="btn btn-outline-warning" >
           <i class="fa fa-file-excel-o p-1"></i>Export
         </a>
+        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportAsPdf()" class="btn btn-outline-warning" >
+          <i class="fa-solid fa-file-pdf"></i>PDF
+        </a>
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="shareViaWhatsApp()" class="btn btn-outline-warning" >
           <i class="fa-brands fa-whatsapp"></i>whatsapp
         </a>
@@ -407,6 +410,34 @@ $(document).ready(function(){
     var subject = encodeURIComponent('Check out this page');
     var body = encodeURIComponent('I thought you might find this interesting: ' + window.location.href);
     window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  }
+</script>
+<script>
+  function exportAsPdf() {
+    // Create a new jsPDF instance
+    var pdf = new jsPDF();
+
+    // Add a title to the PDF
+    pdf.text("Price List Export", 15, 15);
+
+    // Get the table element
+    var table = document.getElementById("estimates-table");
+
+    // Get all rows from the table
+    var rows = table.getElementsByTagName("tr");
+
+    // Loop through each row and extract cell content
+    for (var i = 0; i < rows.length; i++) {
+      var cells = rows[i].getElementsByTagName("td");
+
+      for (var j = 0; j < cells.length; j++) {
+        // Add cell content to the PDF
+        pdf.text(cells[j].innerText, 15, 25 + (i * 10) + (j * 5));
+      }
+    }
+
+    // Save the PDF
+    pdf.save('price-list-export.pdf');
   }
 </script>
 
