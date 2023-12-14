@@ -100,21 +100,26 @@
           <i class="fa fa-file-excel-o p-1"></i>Export
         </a>
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportAsPdf()" class="btn btn-outline-warning" >
-          <i class="fa-solid fa-file-pdf"></i>PDF
+          <i class="fas fa-file-pdf-o"></i>
         </a>
-        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="shareViaWhatsApp()" class="btn btn-outline-warning" >
-          <i class="fa-brands fa-whatsapp"></i>whatsapp
-        </a>
-        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="shareViaEmail()" class="btn btn-outline-warning" >
-          <i class="fa-solid fa-envelope"></i>Email
-        </a>
+        <a   class="text-dark"  style=" height: 35px;"    data-toggle="dropdown"  >
+          <button class="btn btn-warning "  title="Share"><i class="fas fa-share"></i></button>
+       </a>
+       <div class="dropdown-menu " >
+         <a class="dropdown-item" href="{% url 'emailattachment' %}">GMAIL</a>
+         <a class="dropdown-item" href="whatsapp://send?text=Check out this website: [Your URL]" data-action="share/whatsapp/share">WhatsApp</a>
+       </div>
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" class="btn mr-1 pt-2" href="{% url 'addprice' %}">
-          <i class="fa-solid fa fa-plus"></i>New
+          <i class="fa-solid fa fa-plus"></i>
         </a>
       </div>
       
     </div>
     
+
+ 
+
+
 
     <div class="col-sm-12 mt-5">
       <table id="estimates-table" class="table  text-white text-center" style="cursor: pointer;">
@@ -399,17 +404,36 @@ $(document).ready(function(){
 </script>
 
 <script>
-  function shareViaWhatsApp() {
-    // Replace 'your-share-text' with the text you want to share
-    var shareText = encodeURIComponent('Check out this page: ' + window.location.href);
-    window.location.href = 'https://api.whatsapp.com/send?text=' + shareText;
+  function exportAndShareTable() {
+    // Create a new jsPDF instance
+    var pdf = new jsPDF();
+
+    // Get the table element
+    var table = document.getElementById("estimates-table");
+
+    // Convert the table to a PDF using html2pdf
+    html2pdf(table, {
+      margin: 10,
+      filename: 'price-list-export.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).then(function (pdf) {
+      // Save the PDF
+      pdf.save('price-list-export.pdf');
+
+      // Share via WhatsApp
+      shareViaWhatsApp();
+
+      // Share via Gmail (This is just an example link, you may need a server-side component)
+      var mailtoLink = 'mailto:?subject=Check out this PDF&body=I thought you might find this PDF interesting: [LINK_TO_PDF]';
+      window.location.href = mailtoLink.replace('[LINK_TO_PDF]', encodeURIComponent(pdf.output('datauristring')));
+    });
   }
 
-  function shareViaEmail() {
-    // Replace 'your-email-subject' and 'your-email-body' with appropriate content
-    var subject = encodeURIComponent('Check out this page');
-    var body = encodeURIComponent('I thought you might find this interesting: ' + window.location.href);
-    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  function shareViaWhatsApp() {
+    var shareText = encodeURIComponent('Check out this PDF: [LINK_TO_PDF]');
+    window.location.href = 'https://api.whatsapp.com/send?text=' + shareText.replace('[LINK_TO_PDF]', encodeURIComponent(window.location.href));
   }
 </script>
 <script>

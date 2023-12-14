@@ -690,9 +690,21 @@ def detail(request,id):
     comments = Comments_item.objects.filter(item=id).order_by('-id')
     print(product.id)
     
+    
+    estimate = EstimateItems.objects.filter(item_name = product.Name)
+    sales_order = sales_item.objects.filter(product = product.Name)
+    recurring_invoice = recur_itemtable.objects.filter(iname = product.Name)
+    purchase_order = Purchase_Order_items.objects.filter(item = product.Name)
+    recurring_bills = recurring_bills_items.objects.filter(item = product.Name)
+    invoice = invoice_item.objects.filter(product = product.Name)
+    deliveryChellan = ChallanItems.objects.filter(item_name = product.Name)
+    bills = PurchaseBillItems.objects.filter(item_name = product.Name)
+    expense = Expense.objects.filter(goods_label = product.Name)
+    
     quantity = int(product.stock)
     price = int(product.p_price)
     stock = (quantity * price)
+    
     
     
     context={
@@ -702,7 +714,22 @@ def detail(request,id):
        'company':  company, 
        "comments":comments,
        'stock': stock,
+        'estimate': estimate,
+        'sales_order': sales_order,
+        'recurring_invoice': recurring_invoice,
+        'purchase_order': purchase_order,
+        'recurring_bills': recurring_bills,
+        'invoice': invoice,
+        'deliveryChellan': deliveryChellan,
+        'bills': bills,
+        'expense': expense,
+        'stock': stock,
     }
+    
+    
+
+    
+  
     
     return render(request,'demo.html',context)
 
