@@ -86,17 +86,31 @@
             <i class="fa fa-file-excel-o p-1" style="font-size: large;"></i>
             <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center">Export</span>
         </a>
+        
         <a style="border: 1px solid; border-radius: 5px; height: 2.9rem; display: flex; align-items: center;margin-left: 10px;" class="btn btn-outline-warning" href="{% url 'additem' %}">
           <i class="fa fa-plus" style="font-size: large;"></i>
           <span style="font-size: 2vh; margin-left: 0.5rem;" class="text-center"></span>
       </a>
+      <div class="row container-fluid">
+        <div class="col-md-3">
+            <!-- Share via WhatsApp -->
+            <button id="generateAndShareWhatsApp" class="btn btn-outline-success">
+                Share via WhatsApp
+            </button>
+
+            <!-- Share via Gmail -->
+            <button id="generateAndShareGmail" class="btn btn-outline-danger">
+                Share via Gmail
+            </button>
+        </div>
+    </div>
           </div>
         </div>
       </div>
           
-      <div class="row container-fluid">
+      <div class="row container-fluid" id="ContentId">
         <div class="col-sm-12 col-md-11 col-lg-11">
-          <table class="table  text-white" id="myTable">
+          <table class="table  text-white" id="myTable" >
             <thead>
               <tr>
                 <th style="text-align: center;">NAME</th>
@@ -340,6 +354,52 @@ $(document).ready(function(){
      $('.mdi-menu').click()
    }
  }
+</script>
+<script src="path/to/html2pdf.bundle.js"></script>
+
+<script>
+  // Function to generate PDF using html2pdf.js
+  function generatePDF(callback) {
+      const content = document.getElementById('ContentId'); // Replace 'yourContentId' with the actual ID of your content
+
+      html2pdf(content, {
+          margin: 10,
+          filename: 'itemlist.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          callback: function (pdf) {
+              // Invoke the callback function with the PDF object
+              callback(pdf);
+          }
+      });
+  }
+
+  // Function to trigger PDF generation and sharing via WhatsApp
+  function generateAndShareWhatsApp() {
+      generatePDF(function (pdf) {
+          // Convert the PDF to a data URL
+          const pdfDataUrl = pdf.output('datauristring');
+
+          // Open WhatsApp with the PDF data URL
+          window.location.href = `https://wa.me/?text=${encodeURIComponent(pdfDataUrl)}`;
+      });
+  }
+
+  // Function to trigger PDF generation and sharing via Gmail
+  function generateAndShareGmail() {
+      generatePDF(function (pdf) {
+          // Convert the PDF to a data URL
+          const pdfDataUrl = pdf.output('datauristring');
+
+          // Open Gmail with the PDF data URL
+          window.location.href = `mailto:?subject=Check%20out%20this%20PDF&body=${encodeURIComponent(pdfDataUrl)}`;
+      });
+  }
+
+  // Attach click event listeners to the buttons
+  document.getElementById('generateAndShareWhatsApp').addEventListener('click', generateAndShareWhatsApp);
+  document.getElementById('generateAndShareGmail').addEventListener('click', generateAndShareGmail);
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
