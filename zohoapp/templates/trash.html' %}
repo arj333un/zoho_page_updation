@@ -3,20 +3,6 @@
 {% block content %}
 
 <style>            
-  .modal {
-    z-index: 9999;
-    overflow: scroll;
-  }
-
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-
-
   body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
@@ -194,7 +180,7 @@
                 <i  class="fas fa-sort m-1"></i>
               </a>
               <div class="dropdown-menu m-1">
-                {% comment %} <a class="dropdown-item" href="{% url 'detail' detail.id %}">All</a> {% endcomment %}
+                <a class="dropdown-item" href="{% url 'sales_order_det' sale.id %}">All</a>
                 <a class="dropdown-item" onclick="sortTable()">Customer Name</a>
                 <a class="dropdown-item" onclick="sortTablebal()">Total</a>
               </div>
@@ -219,7 +205,7 @@
                         <label>{{v.Name}} </label>
                   </td>
                   <td><br><br>
-                      <label class="text-end d-block">{{v.hsn}}</label>
+                      <label class="text-end d-block">₹{{v.hsn}}</label>
                       
                   </td>
                 </tr>
@@ -233,8 +219,6 @@
        
         </div> 
 
-
-        
         <div class="col-md-9 ml-1  mb-5 " id="overviewdiv">
           <div class="row">
               {% comment %} <div class="col-md-7" >
@@ -244,7 +228,7 @@
           <div class="row">
             <div class="col-md-6" >
               <a class="btn" style="background-color: chocolate; margin-right: 2vh;"><i class="fas fa-eye"></i> Overview</a>
-              <a class="btn" id="transactionbtn" onclick="totemplate()" style="background-color: white; color: black; margin-right: 2vh;"><i class="fas fa-file-alt"></i>  Transcations</a>
+              <a class="btn" id="transactionbtn" onclick="totemplate()" style="background-color: white; color: black; margin-right: 2vh;"><i class="fas fa-file-alt"></i>  Template</a>
 
             </div>
             
@@ -254,17 +238,17 @@
                   <i class="fa fa-exchange" aria-hidden="true"></i>Convert
                 </a>
               {% endif %}
-              {% comment %} <a href="{% url 'edititem' v.id %}"  class=" text-dark" >  {% endcomment %}
+                <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark" >
                   <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-edit"></i></button>
                 </a>
                 <a class="text-dark"     data-toggle="dropdown"  >
                   <button class="btn btn-outline-warning "  title="Share"><i class="fas fa-share"></i></button>
                </a>
                <div class="dropdown-menu " >
-                <a class="dropdown-item" data-target="#shareBillEmail" data-toggle="modal">GMAIL</a>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()">WhatsApp</a>
+                 <a class="dropdown-item" href="{% url 'emailattachment' %}">GMAIL</a>
+                 <a class="dropdown-item" href="whatsapp://send?text=Check out this website: [Your URL]" data-action="share/whatsapp/share">WhatsApp</a>
                </div>
-               {% comment %} <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" > {% endcomment %}
+               <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" >
                 <button class="btn btn-outline-warning"  title="Delete"><i class="fas fa-trash-alt"></i></button>
               </a>
               <a  class="  text-dark"  onclick="exportToPDF()">
@@ -447,7 +431,7 @@
                 {% endif %}
             </div> {% endcomment %}
             <div class="p-info col-6" style="height: 100%; margin-bottom: 1vh;">
-                <div class="card" style="background-color: rgb(110, 61, 46); padding-left: 50rem; padding-top: 1rem;">
+                <div class="card" style="background-color: rgb(110, 61, 46); padding-left: 1rem; padding-top: 1rem;">
                   <div class="row text-center">
                     <h2>PURCHASE DETAILS
                         <hr>
@@ -722,7 +706,7 @@
           <div class="row">
             <div class="col-md-6" >
               <a class="btn" id="overviewbtn" onclick="tooverview()" style="background-color: white; color: black;"><i class="fas fa-eye"></i> Overview</a>
-              <a class="btn" style="background-color: chocolate; margin-left: 2vh;"><i class="fas fa-file-alt"></i>  Transcations</a>
+              <a class="btn" style="background-color: chocolate; margin-left: 2vh;"><i class="fas fa-file-alt"></i>  Template</a>
 
             </div>
 
@@ -730,7 +714,7 @@
               {% if sale.status == "draft" %}
               <a href="{% url 'convert_view' sale.id %}" class="btn btn-outline-warning" style="margin-left: 2vh;"><i class="fa fa-exchange" aria-hidden="true"></i>Convert</a>
               {% endif %}
-              {% comment %} <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark" > {% endcomment %}
+              <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark" >
                 <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-edit"></i></button>
               </a>
               <a class="text-dark"     data-toggle="dropdown"  >
@@ -741,7 +725,7 @@
                <a class="dropdown-item" href="whatsapp://send?text=Check out this website: [Your URL]" data-action="share/whatsapp/share">WhatsApp</a>
              </div>
 
-             {% comment %} <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" > {% endcomment %}
+             <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" >
               <button class="btn btn-outline-warning"  title="Delete"><i class="fas fa-trash-alt"></i></button>
             </a>
             <a  class="  text-dark"  onclick="exportToPDF()">
@@ -771,37 +755,33 @@
                        </div>
                    </header>
                    <div class="invoice-box">
-                       <h1 class="text-dark">Items</h1>
+                       <h1 class="text-dark">SalesOrder</h1>
                        <div class="invoice-header">
                            <div class="invoice-details text-dark">
                             <table>
                               <tr>
-                                  <td class="table-cell text-black" style="border: none;">Sales Price</td>
+                                  <td class="table-cell text-black" style="border: none;">Sales No#</td>
                                   <td class="table-cell text-black" style="border: none;">:</td>
-                                  <td class="table-cell text-black" style="border: none;">{{product.s_price}}</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.sales_no}}</td>
                               </tr>
                               <tr>
-                                  <td class="table-cell text-black" style="border: none;">Purchase Price</td>
+                                  <td class="table-cell text-black" style="border: none;">Sales Order Date</td>
                                   <td class="table-cell text-black" style="border: none;">:</td>
-                                  <td class="table-cell text-black" style="border: none;">{{product.p_price}}</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.sales_date}}</td>
                               </tr>
                               <tr>
-                                  <td class="table-cell text-black" style="border: none;">Minimum Stock To Maintain</td>
+                                  <td class="table-cell text-black" style="border: none;">Expiry Date</td>
                                   <td class="table-cell text-black" style="border: none;">:</td>
-                                  <td class="table-cell text-black" style="border: none;">{{product.minimum_stock}}</td>
-                              </tr> 
+                                  <td class="table-cell text-black" style="border: none;">{{sale.ship_date}}</td>
+                              </tr>
                             </table>
                            </div>
-                          {% comment %} <div class="client-details" style="width: 50vh;"> {% endcomment %}
-                            <div class="client-details" style="width: 50vh;" >
-                              <table>
+                          <div class="client-details" style="width: 50vh;">
+                            <table>
                               <tr>
-                                  <td class="table-cell text-black" style="border: none;">Stock Quantity : {{product.stock}}</td>
+                                  <td class="table-cell text-black" style="border: none;"><b>{{sale.customer.customerName}}</b></td>
                               </tr>
-                              <tr>
-                                <td class="table-cell text-black" style="border: none;">Stock Value : {{stock}}</td>
-                            </tr>
-                              {% comment %} {% if sale.customer.Address1 %}
+                              {% if sale.customer.Address1 %}
                               <tr>
                                   <td class="table-cell text-black" style="border: none;">{{sale.customer.Address1}}</td>
                               </tr>
@@ -813,7 +793,7 @@
                               <tr>
                                   <td class="table-cell text-black" style="border: none;">{{sale.customer.GSTIN}}</td>
                               </tr>
-                              {% endif %} {% endcomment %}
+                              {% endif %}
                             </table>
                           </div>
                        </div>
@@ -822,123 +802,80 @@
                            <thead >
                                <tr>
                                  
-                                 <th id="th" style="text-align: center;"class="text-black">Type</th>
-                                 <th id="th" style="text-align: center;" class="text-black">Name</th>
-                                   <th id="th" style="text-align: center;" class="text-black">Date</th>
-                                   <th id="th" style="text-align: center;" class="text-black">Quantity</th>
-                                   <th id="th" style="text-align: center;" class="text-black">Price</th>
-                                   <th id="th" style="text-align: center;" class="text-black">Status</th>
-                                   {% comment %} <th id="th" style="text-align: center;"> Total</th> {% endcomment %}
+                                 <th id="th" style="text-align: center;">Product</th>
+                                 <th id="th" style="text-align: center;">HSN</th>
+                                   <th id="th" style="text-align: center;">Quantity</th>
+                                   <th id="th" style="text-align: center;">Price</th>
+                                   <th id="th" style="text-align: center;">Discount</th>
+                                   <th id="th" style="text-align: center;">Tax %</th>
+                                   <th id="th" style="text-align: center;"> Total</th>
                                </tr>
                            </thead>
-                           <tbody class="text-black">
-                            {% for v in estimate %}
-                            <tr>
-                              <td>Estimate</td>
-                              <td>{{ v.estimate.customer_name }}</td>
-                              <td>{{ v.estimate.estimate_date }}</td>
-                              <td>{{ v.quantity }}</td>
-                              <td>{{ v.rate }}</td>
-                              <td>{{ v.estimate.status }}</td>
-            
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for s in sales_order %}
-                            <tr>
-                              <td>Sales Order</td>
-                              <td>{{ s.sale.customer.customerName }}</td>
-                              <td>{{ s.sale.sales_date }}</td>
-                              <td>{{ s.quantity }}</td>
-                              <td>{{ s.rate }}</td>
-                              <td>{{ s.sale.status }}</td>
-                            {% endfor %}
-                            </tr>
-                            
-                            {% for r in recurring_invoice %}
-                            <tr>
-                              <td>Recurring Invoice</td>
-                              <td>{{ r.ri.cname }}</td>
-                              <td>{{ r.ri.start }}</td>
-                              <td>{{ r.quantity }}</td>
-                              <td>{{ r.rate }}</td>
-                              <td>{{ r.ri.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for p in purchase_order %}
-                            <tr>
-                              <td>Purchase Order</td>
-                              <td>{{ p.PO.customer_name }}</td>
-                              <td>{{ p.PO.Ord_date }}</td>
-                              <td>{{ p.quantity }}</td>
-                              <td>{{ p.rate }}</td>
-                              <td>{{ p.PO.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for r in recurring_bills %}
-                            <tr>
-                              <td>Recurring Bills</td>
-                              <td>{{ r.recur_bills.customer_name }}</td>
-                              <td>{{ r.recur_bills.start_date }}</td>
-                              <td>{{ r.quantity }}</td>
-                              <td>{{ r.rate }}</td>
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for i in invoice %}
-                            <tr>
-                              <td>Invoice</td>
-                              <td>{{ i.inv.customer.customerName }}</td>
-                              <td>{{ i.inv.inv_date }}</td>
-                              <td>{{ i.quantity }}</td>
-                              <td>{{ i.rate }}</td>
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for d in deliveryChellan %}
-                            <tr>
-                              <td>DeliveryChellan</td>
-                              <td>{{ d.chellan.customer_name }}</td>
-                              <td>{{ d.chellan.chellan_date }}</td>
-                              <td>{{ d.quantity }}</td>
-                              <td>{{ d.rate }}</td>
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for b in bills %}
-                            <tr>
-                              <td>Bills</td>
-                              <td>{{ b.purchase_bill.customer_name }}</td>
-                              <td>{{ b.purchase_bill.bill_date }}</td>
-                              <td>{{ b.quantity }}</td>
-                              <td>{{ b.rate }}</td>
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                            {% for e in expense %}
-                            <tr>
-                              <td>Expense</td>
-                              <td>{{ e.customername }}</td>
-                              <td>{{ e.start_date }}</td>
-                              <td>{{ e.quantity }}</td>
-                              <td>{{ e.amount }}</td>
-                              <td>{{ product.status }}</td>
-                            {% endfor %}
-                            </tr>
-            
-                          </tbody>
+                           <tbody>
+                             {% for i in saleitem %}
+                             <tr style="color: black;">
+                               <td style="text-align: center;">{{i.product}}</td>
+                               <td style="text-align: center;">{{i.hsn}}</td>
+                               <td style="text-align: center;">{{i.quantity}}</td>
+                               <td style="text-align: center;">{{i.rate}}</td>
+                               <td style="text-align: center;">{{i.desc}}</td>
+                               <td style="text-align: center;">{{i.tax}}</td>
+                               <td style="text-align: center;">{{i.total}}</td>
+                             </tr>
+                             {% endfor %}
+ 
+                         </tbody>
                        </table><br>
                        
-
-                       
-                      
+                       <div class="invoice-total" >
+                        <div class="row">
+                          <div class="col-md-7"></div>
+                          <div class="col-md-4">
+                            <table style="margin-left: 10vh;">
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">Subtotal</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;" ><b>{{sale.subtotal}}</b></td>
+                              </tr>
+                              {% if sale.igst != '0.00' %}
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">IGST</td>
+                                  <td class="table-cell text-black" style="border: none;">:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.igst}}</td>
+                              </tr>
+                              {% else %}
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">SGST</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.sgst}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">CGST</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.cgst}}</td>
+                              </tr>
+                              {% endif %}
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">Tax Amount</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.t_tax}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">Shipping Charge</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.sh_charge}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">Adjustment</td>
+                                  <td class="table-cell text-black" style="border: none;" >:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.adjust}}</td>
+                              </tr>
+                              <tr>
+                                  <td class="table-cell text-black" style="border: none;">Total</td>
+                                  <td class="table-cell text-black" style="border: none;">:</td>
+                                  <td class="table-cell text-black" style="border: none;">{{sale.grandtotal}}</td>
+                              </tr>
+                            </table>
                           </div>
 
                         </div>
@@ -946,47 +883,7 @@
                        </div>
                       
                    </div>
-  <!-- Share bill Modal -->
-<div class="modal fade" id="shareBillEmail">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-      <div class="modal-header" style="background: rgb(32, 35, 37);">
-        <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share Sales Order Via Email</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body" style="background: rgb(32, 35, 37);">
-        <div class="card p-3 m-3">
-          {% comment %} <form action="{% url 'sharePricelistToEmail' sale.id %}" method="post" class="needs-validation" {% endcomment %}
-          <form action="" method="post" class="needs-validation"
-
-          id="share_to_email_form" autocomplete="off">
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="emailIds">Email IDs</label>
-              <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
-                placeholder="Multiple emails can be added by separating with a comma(,)." required></textarea>
-            </div>
-            <div class="form-group mt-2">
-              <label for="item_unitname">Message(optional)</label>
-              <textarea name="email_message" id="email_message" class="text-dark form-control" cols=""
-                rows="4" placeholder="This message will be sent along with Bill details."></textarea>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
-          <input type="submit" id="share_with_email"
-            class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="SEND MAIL">
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
-
-</div>
+ 
                    <footer class="mb-5">
                        <p class="text-dark">&copy; Zho Books 2023 | Info park kakkanad kochi, Ernamkulam, kerala India 12345 | Phone: (123) 456-7890 | Email: info@zohodjango.com</p>
                    </footer>
@@ -1014,25 +911,14 @@
  
    </div>
   
-
+ 
 
 
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </section>
-{% for message in messages %}
 
-<script>
-  let msg = '{{message}}';
-  alert(msg);
-</script>
-{% endfor %}
-
-
-
-
-<script>
 <script>
       function exportToPDF(){
         var content = document.getElementById('selected-area');
@@ -1175,76 +1061,5 @@ rows.forEach(row => {
 </script>
 
 
-<script>
-  
-  $(document).ready(function () {
-    $('#share_with_email').on('click', function () {
-      var emailsInput = document.getElementById('emailIds');
-      var emailsString = emailsInput.value.trim();
 
-      var emails = emailsString.split(',').map(function (email) {
-        return email.trim();
-      });
-
-      var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-      var invalidEmails = []
-      if (emailsString == "") {
-        alert('Enter valid email addresses..')
-      }
-      else {
-        for (var i = 0; i < emails.length; i++) {
-          var currentEmail = emails[i];
-
-          if (currentEmail != "" && !emailRegex.test(currentEmail)) {
-            console.log(currentEmail + ' is invalid!');
-            invalidEmails.push(currentEmail)
-          }
-        }
-
-        if (invalidEmails.length > 0) {
-          alert('Invalid emails..Please check!\n' + invalidEmails)
-          // alert(invalidEmails)
-        } else {
-          $('#share_to_email_form').submit();
-        }
-      }
-    })
-  });
-
-
-  function shareOnWhatsApp() {
-    var url = window.location.href;
-    var text = url;
-    text = encodeURIComponent(text);
-    var whatsappUrl = "whatsapp://send?text=" + text;
-    window.location.href = whatsappUrl;
-  }
-
-  function exportToPDF() {
-    var content = document.getElementById('selected-area');
-    html2pdf()
-      .from(content)
-      .save('{{sale.sales_no}}' + '.pdf')
-  }
-  function exportToPDF2() {
-    var content = document.getElementById('selected-area2');
-    html2pdf()
-      .from(content)
-      .save('{{sale.sales_no}}' + '.pdf')
-  }
-  function exportToPDF3() {
-    var content = document.getElementById('selected-area3');
-    html2pdf()
-      .from(content)
-      .save('{{sale.sales_no}}' + '.pdf')
-  }
-  function exportToPDF4() {
-    var content = document.getElementById('printslip');
-    html2pdf()
-      .from(content)
-      .save('{{sale.sales_no}}' + '.pdf')
-  }
-
-</script>
 {% endblock %}

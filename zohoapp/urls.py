@@ -934,6 +934,8 @@ urlpatterns = [
     
     path('convert_challan_to_invoice/<int:id>/', views.convert_challan_to_invoice, name='convert_challan_to_invoice'),
     
+    path('sharePricelistToEmail/<int:id>/', views.sharePricelistToEmail, name='sharePricelistToEmail'),
+    
     path('custmz_rprt_shw_hide',views.custmz_rprt_shw_hide,name='custmz_rprt_shw_hide'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
