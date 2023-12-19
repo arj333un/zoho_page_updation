@@ -19883,7 +19883,7 @@ def sharePricelistToEmail(request,id):
 
                 cmp = company_details.objects.get( user = request.user.id)
                 bill = Pricelist.objects.get(id = id)
-                items = AddItem.objects.filter( sale = bill.id)
+                items = AddItem.objects.get(id = id)
                         
                 context = {'bill': bill, 'cmp': cmp,'items':items}
                 template_path = 'item_pdf.html'
