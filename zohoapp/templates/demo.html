@@ -250,15 +250,16 @@
             </div>
             
             <div class="col-md-6" style="text-align: right;">
-              {% if sale.status == "draft" %}
-              <a href="{% url 'convert_view' sale.id %}" class="btn btn-outline-warning" >
-                  <i class="fa fa-exchange" aria-hidden="true"></i>Convert
+              {%  if product.satus == 'Active'  %}
+              <a class="btn  btn-outline-warning " href="{% url 'item_statuschange' product.id %}">{{product.satus}}</a>
+            {% elif product.satus == 'Inactive'  %}
+              <a class="btn  btn-outline-warning" href="{% url 'item_statuschange' product.id %}" >{{product.satus}}</a>
+            {% endif %}
+             <a href="{% url 'additem' %}"  class=" text-dark" >  
+                  <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-plus"></i></button>
                 </a>
-              {% endif %}
-              <a href="{% url 'edititem' product.id %}"  class=" text-dark" >  
-                  <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-edit"></i></button>
-                </a>
-                <a class="text-dark"     data-toggle="dropdown"  >
+
+                {% comment %}  <a class="text-dark"     data-toggle="dropdown"  >
                   <button class="btn btn-outline-warning "  title="Share"><i class="fas fa-share"></i></button>
                </a>
                <div class="dropdown-menu " >
@@ -275,7 +276,7 @@
               <a class=" text-dark"  onclick="printSelectedArea()"  >
                 <button class="btn btn-outline-warning"  title="Print"><i class="fas fa-print"></i>
                 </button> 
-               </a>
+               </a> {% endcomment %}
               </div>
           </div><br>
 
@@ -728,21 +729,23 @@
             </div>
 
             <div class="col-md-6" style="text-align: right;">
-              {% if sale.status == "draft" %}
-              <a href="{% url 'convert_view' sale.id %}" class="btn btn-outline-warning" style="margin-left: 2vh;"><i class="fa fa-exchange" aria-hidden="true"></i>Convert</a>
-              {% endif %}
-              {% comment %} <a href="{% url 'edit_sales_order' sale.id %}"  class=" text-dark" > {% endcomment %}
+              {%  if product.satus == 'Active'  %}
+             <a class="btn  btn-outline-warning " href="{% url 'item_statuschange' product.id %}">{{product.satus}}</a>
+           {% elif product.satus == 'Inactive'  %}
+             <a class="btn  btn-outline-warning" href="{% url 'item_statuschange' product.id %}" >{{product.satus}}</a>
+           {% endif %}
+             <a href="{% url 'edititem' product.id %}"  class=" text-dark" > 
                 <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-edit"></i></button>
               </a>
               <a class="text-dark"     data-toggle="dropdown"  >
                 <button class="btn btn-outline-warning "  title="Share"><i class="fas fa-share"></i></button>
              </a>
              <div class="dropdown-menu " >
-               <a class="dropdown-item" href="{% url 'emailattachment' %}">GMAIL</a>
-               <a class="dropdown-item" href="whatsapp://send?text=Check out this website: [Your URL]" data-action="share/whatsapp/share">WhatsApp</a>
+              <a class="dropdown-item" data-target="#shareBillEmail" data-toggle="modal">GMAIL</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()">WhatsApp</a>
              </div>
 
-             {% comment %} <a href="{% url 'delet_sales' sale.id %}" class="  text-dark" > {% endcomment %}
+            <a href="{% url 'cleer' product.id %}" class="  text-dark" > 
               <button class="btn btn-outline-warning"  title="Delete"><i class="fas fa-trash-alt"></i></button>
             </a>
             <a  class="  text-dark"  onclick="exportToPDF()">
@@ -752,6 +755,7 @@
               <button class="btn btn-outline-warning"  title="Print"><i class="fas fa-print"></i>
               </button> 
              </a>
+            
             </div>
           </div>
 

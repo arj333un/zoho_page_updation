@@ -19893,9 +19893,9 @@ def sharePricelistToEmail(request,id):
                 result = BytesIO()
                 pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
                 pdf = result.getvalue()
-                filename = f'Sales Bill - {bill.sales_no}.pdf'
-                subject = f"SALES BILL - {bill.sales_no}"
-                email = EmailMessage(subject, f"Hi,\nPlease find the attached Items  - Bill-{bill.hsn}. \n{email_message}\n\n--\nRegards,\n{cmp.company_name}\n{cmp.address}\n{cmp.state} - {cmp.country}\n{cmp.contact_number}", from_email=settings.EMAIL_HOST_USER,to=emails_list)
+                filename = f'Item - {items.Name}.pdf'
+                subject = f"Item - {items.Name}"
+                email = EmailMessage(subject, f"Hi,\nPlease find the attached Items  - Bill-{items.hsn}. \n{email_message}\n\n--\nRegards,\n{cmp.company_name}\n{cmp.address}\n{cmp.state} - {cmp.country}\n{cmp.contact_number}", from_email=settings.EMAIL_HOST_USER,to=emails_list)
                 email.attach(filename, pdf, "application/pdf")
                 email.send(fail_silently=False)
 
