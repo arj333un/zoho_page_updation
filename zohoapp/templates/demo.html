@@ -755,13 +755,64 @@
               <button class="btn btn-outline-warning"  title="Print"><i class="fas fa-print"></i>
               </button> 
              </a>
-            
-            </div>
+             <button onclick="toggleModal()" class="btn btn-outline-warning ">
+              <i class="fa fa-solid fa-comment"></i>
+            </button>
+             {% comment %} <label for="file-input" class="btn ml-1  btn-outline-warning " data-toggle="tooltip" title="Upload Attachments" >
+              <i class="fas fa-paperclip"></i>
+            </label>
+            <input id="file-input" type="file" name="file" style="display:none;" onchange="uploadFile()">
+            <!-- <a class="btn ml-1  " href="" id="sts"></a> -->
+            </div> {% endcomment %}
           </div>
 
-          
+        </div>
              
-
+          <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="myModalLabel">Add Comment</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="commentForm" method="post" action="{% url 'commentproduct' product.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="commentInput">Comment:</label>
+                      <textarea class="form-control bg-white text-dark" id="commentInput" name="comment" rows="3" style="height: 80px;"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" id="submitCommentBtn" onclick="submitComment()">Submit</button>
+                    </div>
+                    <div class="container-fluid">
+                      <table class="table table-responsive-md mt-4 table text-white">
+                        <thead>
+                          <tr>
+                            <th>sl no.</th>
+                            <th>Comments</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for com in comments %}
+                          <tr class="table-row">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ com.content }}</td>  
+                            <td><a href="{% url 'delete_comment' product.id com.id %}">Delete</a></td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+      
 
              <div class="mt-3" style="overflow-y: scroll;height: 600px;width: 100%; margin-left: -1vh">
          
@@ -826,7 +877,7 @@
                        <table >
                            <thead >
                                <tr>
-                                 
+                                <th id="th" style="text-align: center;"class="text-black">Transcations</th>
                                  <th id="th" style="text-align: center;"class="text-black">Type</th>
                                  <th id="th" style="text-align: center;" class="text-black">Name</th>
                                    <th id="th" style="text-align: center;" class="text-black">Date</th>
@@ -837,9 +888,12 @@
                                </tr>
                            </thead>
                            <tbody class="text-black">
+                            <td>{{ forloop.counter }}</td>
                             {% for v in estimate %}
+
                             <tr>
                               <td>Estimate</td>
+
                               <td>{{ v.estimate.customer_name }}</td>
                               <td>{{ v.estimate.estimate_date }}</td>
                               <td>{{ v.quantity }}</td>
@@ -1255,4 +1309,27 @@ rows.forEach(row => {
   }
 
 </script>
+
+<script>
+  function toggleModal() {
+    const modal = document.getElementById("myModal");
+    if (modal.style.display === "none") {
+      modal.style.display = "block";
+      // You can add an AJAX call here to load comments dynamically, if needed
+    } else {
+      modal.style.display = "none";
+    }
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+
+  function submitComment() {
+    document.getElementById('commentForm').submit();
+  }
+</script>
+
 {% endblock %}
