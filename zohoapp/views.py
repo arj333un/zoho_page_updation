@@ -20106,3 +20106,73 @@ from openpyxl import load_workbook
 #     wb.save(response)
 
 #     return response
+
+
+
+from openpyxl import load_workbook
+from django.shortcuts import redirect, HttpResponse
+from django.contrib import messages
+from .models import AddItem, PaymentReceivedIdModel
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+
+@login_required(login_url='login')
+def import_item(request):
+    try:
+        if request.method == "POST" and 'excel_file' in request.FILES:
+            excel_file = request.FILES['excel_file']
+
+            wb = load_workbook(excel_file)
+            ws = wb.active
+
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                name, mail, date, method, cheque_id, upi_id, bank, acc_no, amount, paid, balance = row
+
+                user = request.user
+                customer_exists = AddItem.objects.filter(customer__customerEmail=mail).exists()
+
+                if customer_exists:
+                    cust = AddItem.objects.get(customer__customerEmail=mail).customer
+
+                    # ... (rest of the existing code related to creating payment records)
+
+                else:
+                    messages.info(request, f"Customer with mail id {mail} doesn't exist")
+                    return redirect('payment_received_list_out')
+
+            messages.success(request, "Payments imported successfully!")
+            return redirect('payment_received_list_out')
+
+    except Exception as e:
+        messages.warning(request, f"An error occurred: {str(e)}")
+        return redirect('payment_received_list_out')
+
+@login_required(login_url='login')
+def download_pay_rec_sample_import_file(request):
+    # Sample data for the Excel file
+    sample_data = [
+        ['CUSTOMER NAME', 'CUSTOMER MAIL ID', 'PAYMENT RECEIVED DATE', 'PAYMENT RECEIVED METHOD',
+         'CHEQUE ID', 'UPI ID', 'BANK NAME', 'ACCOUNT NUMBER', 'PAYMENT RECEIVED AMOUNT',
+         'PAYMENT RECEIVED PAID', 'PAYMENT RECEIVED BALANCE'],
+        ['Mr. Praveen SS', 'praveen@gmail.com', '2023-06-23', 'Cash', '', '', '', '', '200', '100', '100'],
+        ['Mr. Saumya SS', 'saumya@gmail.com', '2023-07-25', 'UPI', '', 'sam@axis', '', '', '500', '400', '100'],
+        ['Mr. Vaudev MV', 'vasudev@gmail.com', '2023-05-05', 'Cheque', '12313', '', '', '', '400', '155', '245'],
+        ['Mr. Baby PA', 'pababy1964@gmail.com', '2023-12-25', 'Bank', '', '', 'ICICI', '648656546846516', '825', '825', '0']
+    ]
+
+    wb = Workbook()
+    sheet = wb.active
+    sheet.title = 'Sheet1'
+
+    # Populate the sheet with sample data
+    for row in sample_data:
+        sheet.append(row)
+
+    # Create a response with the Excel file
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=payment_received_sample.xlsx'
+
+    # Save the workbook to the response
+    wb.save(response)
+
+    return response
