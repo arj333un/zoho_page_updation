@@ -96,80 +96,7 @@
         </div>
       </div>
           
-      <div class="row container-fluid" id="ContentId">
-        <div class="col-sm-12 col-md-11 col-lg-11">
-          <table class="table  text-white" id="myTable" >
-            <thead>
-              <tr>
-                <th style="text-align: center;">NAME</th>
-                <th style="text-align: center;">HSN/SAC</th>
-                <th style="text-align: center;">SALES RATE</th>
-                <th style="text-align: center;">PURCHASE RATE</th>
-                <th style="text-align: center;">STOCK ON INVENTORY</th>
-                <th style="text-align: center;">USAGE UNIT</th>
-                <th style="text-align: center;">STATUS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for v in view %}
-                <tr id="over" class='clickable-row' data-href="detail/{{ v.id }}" data-status="{{ v.satus }}">
-                  <td style="text-align: center;">{{ v.Name }}</td>
-                  <!-- <td style="text-align: center;" onclick="location.href ='' " > {{v.Name}}</td> -->
-                  <td style="text-align: center;">{{ v.hsn }}</td>
-                  <td style="text-align: center;">{{ v.s_price }}</td>
-                  <td style="text-align: center;">{{ v.p_price }}</td>
-                  <td style="text-align: center;">{{ v.stock }}</td>
-                  <td style="text-align: center;">{{ v.unit.unit }}</td>
-                  <td style="text-align: center;">{{ v.satus }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
-      <div class="modal-dialog">
-        <div style="background-color: rgb(63, 63, 63);width: 40rem;" class="modal-content">
-          <!-- <div class="modal-header">
-            
-          </div> -->
-          <div class="modal-body">
-            <div class="d-flex justify-content-between">
-              <h1 class="modal-title fs-5 " id="exampleModalLabel">Import From Excel</h1>
-              <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <hr class="mb-3">
-            <label class="text-danger fw-bold pb-2" for="">Fields needed to be filled are</label>
-            <div style="overflow-x: auto;">
-              <table class="table table-bordered border-secondary">
-                <thead>
-                  <th class="text-light">NAME</th>
-                  <th class="text-light">DESCRIPTION</th>
-                  <th class="text-light">SALES RATE</th>
-                  <th class="text-light">PURCHASE RATE</th>
-                  <th class="text-light">HSN/SAC</th>
-                  <th class="text-light">STOCK ON INVENTORY</th>
-                  <th class="text-light">USAGE UNIT</th>
-                  <th class="text-light">STATUS</th>
-                </thead>
-              </table>
-              <p></p>
-            </div>
-            <hr>
-            <form action="" method="POST" enctype="multipart/form-data">
-              {% comment %} {% csrf_token %}
-              <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
-                  <a class="btn btn-outline-warning ms-5" href="">Download</a> {% endcomment %}
-                 <hr>
-                  <input class="form-control bg-dark" type="file" name="excel_file">
-                  <hr>
-                  <div class="d-flex justify-content-end">
-                    <button type="button" class="btn bt-lg btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn bt-lg btn-primary">Import</button>
-                  </div>
-              </div>
-              <br>
-          </form>
-          <!-- <div class="modal-footer">
+     
             
           </div> -->
         </div>
@@ -216,43 +143,6 @@
         return keyA.localeCompare(keyB);
       });
       $.each(rows, function(index, row) {
-        $('#myTable').children('tbody').append(row);
-      });
-    }
-
-    // Function to sort items by Usage Unit
-    function sortByUsageUnit() {
-      var rows = $('#myTable tbody tr').get();
-      rows.sort(function(a, b) {
-        var keyA = $(a).children('td').eq(6).text(); // Adjust the column index for Usage Unit
-        var keyB = $(b).children('td').eq(6).text(); // Adjust the column index for Usage Unit
-        return keyA.localeCompare(keyB);
-      });
-      $.each(rows, function(index, row) {
-        $('#myTable').children('tbody').append(row);
-      });
-    }
-
-    // Function to restore the table to its original state
-    function restoreOriginalTable() {
-      $('#myTable').replaceWith(originalTable.clone()); // Replace the current table with the original table clone
-    }
-
-    // Handle sorting based on data-sort attribute
-    $('[data-sort]').on('click', function() {
-      var sortType = $(this).data('sort');
-      if (sortType === 'name') {
-        sortByName();
-      } else if (sortType === 'HSN') {
-        sortByHSN();
-      } else if (sortType === 'usage') {
-        sortByUsageUnit();
-      } else if (sortType === 'all') {
-        restoreOriginalTable();
-      }
-    });
-  });
-</script>
 
 
 <script>
