@@ -499,58 +499,7 @@ $(document).ready(function(){
               {% endfor %}
             </tbody>
           </table>
-        <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
-      <div class="modal-dialog">
-        <div style="background-color: rgb(63, 63, 63);width: 40rem;" class="modal-content">
-          <!-- <div class="modal-header">
-            
-          </div> -->
-          <div class="modal-body">
-            <div class="d-flex justify-content-between">
-              <h1 class="modal-title fs-5 " id="exampleModalLabel">Import From Excel</h1>
-              <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <hr class="mb-3">
-            <label class="text-danger fw-bold pb-2" for="">Fields needed to be filled are</label>
-            <div style="overflow-x: auto;">
-              <table class="table table-bordered border-secondary">
-                <thead>
-                  <th class="text-light">NAME</th>
-                  <th class="text-light">DESCRIPTION</th>
-                  <th class="text-light">SALES RATE</th>
-                  <th class="text-light">PURCHASE RATE</th>
-                  <th class="text-light">HSN/SAC</th>
-                  <th class="text-light">STOCK ON INVENTORY</th>
-                  <th class="text-light">USAGE UNIT</th>
-                  <th class="text-light">STATUS</th>
-                </thead>
-              </table>
-              <p></p>
-            </div>
-            <hr>
-            <form action="" method="POST" enctype="multipart/form-data">
-              {% comment %} {% csrf_token %}
-              <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
-                  <a class="btn btn-outline-warning ms-5" href="">Download</a> {% endcomment %}
-                 <hr>
-                  <input class="form-control bg-dark" type="file" name="excel_file">
-                  <hr>
-                  <div class="d-flex justify-content-end">
-                    <button type="button" class="btn bt-lg btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn bt-lg btn-primary">Import</button>
-                  </div>
-              </div>
-              <br>
-          </form>
-          <!-- <div class="modal-footer">
-            
-          </div> -->
-        </div>
-      </div>
-    </div>
-</div>
- 
+       
 
 <script>
   jQuery(document).ready(function($) {
