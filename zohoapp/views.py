@@ -20195,7 +20195,11 @@ def import_item(request):
                     elif payments_recieved_method == 'upi':
                         # print('upi')
                         upi_id = request.POST.get('upi_id')
-                        # print(upi_id)
+                       
+                       
+                       
+                       
+                       
                         payment = Additem(user=user,
                                           Name=name,
                                 hsn=hsn,
@@ -20309,39 +20313,10 @@ def import_item(request):
                         print('5')
                 else:
                     messages.info(request,f"Customer with mail id {mail} doen't exists")
-                    return redirect('payment_reciedved_list_out')
+                    return redirect('item_view')
             
         # except:
         #     messages.warning(request,"Table field is missing / you are importing the wrong File.")
-        return redirect('payment_reciedved_list_out')
-    return redirect('payment_reciedved_list_out')
-
-from openpyxl import Workbook
-
-@login_required(login_url='login')
-def download_pay_rec_sampleImportFile(request):
-    
-    bank_table = [['CUSTOMER NAME','CUSTOMER MAIL ID','PAYMENT RECIEVED DATE','PAYMENT RECIEVED MAETHOD','CHEQUE ID','UPI ID','BANK NAME','ACCOUNT NUMBER','PAYMENT RECIEVED AMOUNT','PAYMENT RECIEVED PAID','PAYMENT RECIEVED BALANCE'], 
-                  ['mr. praveen ss', 'praveen@gmail.com', '2023-06-23', 'cash', '','','','','200','100','100'], 
-                  ['mr. saumya ss', 'saumya@gmail.com', '2023-07-25', 'upi', '','sam@axis','','','500','400','100'], 
-                  ['mr. vaudev mv', 'vasudev@gmail.com', '2023-05-05', 'cheque', '12313','','','','400','155','245'],
-                  ['mr. baby pa', 'pababy1964@gmail.com', '2023-12-25', 'bank', '','','icici','648656546846516','825','825','0']]
-
-    wb = Workbook()
-
-    sheet1 = wb.active
-    sheet1.title = 'Sheet1'
-
-    # Populate the sheets with data
-    for row in bank_table:
-        sheet1.append(row)
-
-    # Create a response with the Excel file
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=payment-recieved.xlsx'
-
-    # Save the workbook to the response
-    wb.save(response)
-
-    return response
+        return redirect('item_view')
+    return redirect('item_view')
 
