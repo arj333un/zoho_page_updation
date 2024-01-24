@@ -99,19 +99,22 @@
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportToExcel()" class="btn btn-outline-warning" >
           <i class="fa fa-file-excel-o p-1"></i>Export
         </a>
-        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="shareViaWhatsApp()" class="btn btn-outline-warning" >
-          <i class="fa-brands fa-whatsapp"></i>whatsapp
+        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="exportAsPdf()" class="btn btn-outline-warning" >
+          <i class="fas fa-file-pdf-o"></i>
         </a>
-        <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" onclick="shareViaEmail()" class="btn btn-outline-warning" >
-          <i class="fa-solid fa-envelope"></i>Email
-        </a>
+        
+       
         <a style="color: white; background-color: rgb(210, 132, 30); height: 35px;" class="btn mr-1 pt-2" href="{% url 'addprice' %}">
-          <i class="fa-solid fa fa-plus"></i>New
+          <i class="fa-solid fa fa-plus"></i>
         </a>
       </div>
       
     </div>
     
+
+ 
+
+
 
     <div class="col-sm-12 mt-5">
       <table id="estimates-table" class="table  text-white text-center" style="cursor: pointer;">
@@ -200,11 +203,17 @@
 </tbody>
 
 </table>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
+
+ 
+
+
+  </section>
+
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 10;">
   <div class="modal-dialog">
     <div style="background-color: rgb(63, 63, 63);width: 40rem;" class="modal-content">
-      <!-- <div class="modal-header">
+      <!-- <div class="modal-header"  > 
         
       </div> -->
       <div class="modal-body">
@@ -212,29 +221,29 @@
           <h1 class="modal-title fs-5 " id="exampleModalLabel">Import From Excel</h1>
           <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        {% comment %} <hr class="mb-3">
+        <hr class="mb-3">
         <label class="text-danger fw-bold pb-2" for="">Fields needed to be filled are</label>
         <div style="overflow-x: auto;">
           <table class="table table-bordered border-secondary">
             <thead>
               <th class="text-light">NAME</th>
               <th class="text-light">DESCRIPTION</th>
-              <th class="text-light">TYPE</th>
-              <th class="text-light">ITEM RATE</th>
-              <th class="text-light">TYPE</th>
-              <th class="text-light">ROUNDING</th>
-              <th class="text-light">DETAILS</th>
+              <th class="text-light">SALES RATE</th>
+              <th class="text-light">PURCHASE RATE</th>
+              <th class="text-light">HSN/SAC</th>
+              <th class="text-light">STOCK ON INVENTORY</th>
+              <th class="text-light">USAGE UNIT</th>
               <th class="text-light">STATUS</th>
             </thead>
           </table>
           <p></p>
         </div>
-        <hr> {% endcomment %}
+        <hr>
         <form action="" method="POST" enctype="multipart/form-data">
-         
-          {% comment %} <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
-              <a class="btn btn-outline-warning ms-5" href="">Download</a>{% endcomment %}
-             <hr> 
+          {% comment %} {% csrf_token %}
+          <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
+              <a class="btn btn-outline-warning ms-5" href="">Download</a> {% endcomment %}
+             <hr>
               <input class="form-control bg-dark" type="file" name="excel_file">
               <hr>
               <div class="d-flex justify-content-end">
@@ -251,9 +260,6 @@
   </div>
 </div>
 </div>
-</div>
-  </section>
-
 
   
 </div>
@@ -367,48 +373,66 @@
 </script>
 
 <script>
-  function exportToExcel() {
-    $('.export_hide').remove()
-    var table = document.querySelector('table');
-    var ws = XLSX.utils.table_to_sheet(table);
-    var wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'report.xlsx');
-    window.location.href=""
-}
-function call_import()
-{
-  $('#call_input').click()
-}
-$(document).ready(function(){
-  $('#call_input').on('change',function(){
-    $('#click_sbmt').click()
-   
+  var $rows = $('#table tr');
+  $('#search').keyup(function() {
+      var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+      
+      $rows.hide().filter(function() {
+          var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+          return ~text.indexOf(val);
+      }).show();
+  });
+
+  <script>
+    function exportToExcel() {
+      $('.export_hide').remove()
+      var table = document.querySelector('table');
+      var ws = XLSX.utils.table_to_sheet(table);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, 'report.xlsx');
+      window.location.href=""
+  }
+  function call_import()
+  {
+    $('#call_input').click()
+  }
+  $(document).ready(function(){
+    $('#call_input').on('change',function(){
+      $('#click_sbmt').click()
+     
+    })
   })
-})
- function reduce_dash(){
-   alert($('.form-inline .form-check').Width())
-   if($('.form-inline .form-check').css('width')=== '100%')
-   {
-     $('.mdi-menu').click()
+   function reduce_dash(){
+     alert($('.form-inline .form-check').Width())
+     if($('.form-inline .form-check').css('width')=== '100%')
+     {
+       $('.mdi-menu').click()
+     }
    }
- }
+  </script>
+  <script src="path/to/html2pdf.bundle.js"></script>
+  
+  <script>
+    // Function to generate PDF using html2pdf.js
+    function generatePDF(callback) {
+        const content = document.getElementById('ContentId'); 
+  
+        html2pdf(content, {
+            margin: 10,
+            filename: 'itemlist.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            callback: function (pdf) {
+                // Invoke the callback function with the PDF object
+                callback(pdf);
+            }
+        });
+    }
 </script>
 
-<script>
-  function shareViaWhatsApp() {
-    // Replace 'your-share-text' with the text you want to share
-    var shareText = encodeURIComponent('Check out this page: ' + window.location.href);
-    window.location.href = 'https://api.whatsapp.com/send?text=' + shareText;
-  }
 
-  function shareViaEmail() {
-    // Replace 'your-email-subject' and 'your-email-body' with appropriate content
-    var subject = encodeURIComponent('Check out this page');
-    var body = encodeURIComponent('I thought you might find this interesting: ' + window.location.href);
-    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
-  }
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
