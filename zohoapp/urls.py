@@ -936,6 +936,9 @@ urlpatterns = [
     
     path('sharePricelistToEmail/<int:id>/', views.sharePricelistToEmail, name='sharePricelistToEmail'),
     
+    path('sharePricelistToEmail1/<int:id>/', views.sharePricelistToEmail1, name='sharePricelistToEmail1'),
+
+    
     path('custmz_rprt_shw_hide',views.custmz_rprt_shw_hide,name='custmz_rprt_shw_hide'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
