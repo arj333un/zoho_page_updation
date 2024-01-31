@@ -19945,6 +19945,54 @@ def sharePricelistToEmail1(request,id):
             messages.error(request, f'{e}')
             return redirect(detail, id)
 
+
+def import_item(request):
+    print("heloooooooooooooooooooooooo")
+    user1=request.user.id
+    user2=User.objects.get(id=user1)
+    cmp=company_details.objects.get(user=user1)
+    cid=customer.objects.get(id=1)
+    print("heloooooooooooooooooooooooo")
+    if request.method == 'POST' and 'excel_file' in request.FILES:
+        excel_file = request.FILES.get('excel_file')
+        wb = load_workbook(excel_file)
+        try:
+            ws = wb["Sheet1"]
+            header_row = ws[1]
+            column_names = [cell.value for cell in header_row]
+            print("Column Names:", column_names)
+        except:
+            print('sheet not found')
+            messages.error(request,'`project` sheet not found.! Please check.')
+            return redirect('vproj')
+        ws = wb["Sheet1"]
+        estimate_columns = ['SLNO','PROJECT NAME','PROJECT CODE','CUSTOMER NAME','EMAIL','BILLING ADDRESS','BILLING METHOD','START DATEE','END DATE','ACTION','PROJECT COST']
+        estimate_sheet = [cell.value for cell in ws[1]]
+        if estimate_sheet != estimate_columns:
+            print('invalid sheet')
+            messages.error(request,'`project` sheet column names or order is not in the required formate.! Please check.')
+            return redirect("vproj")
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            if slno is None or project_name is None or project_code is None or customer_name is None or email is None or billing_address is None or billing_method is None or start_date is None or end_date is None or action is None or pcost is None   :
+                print('challan == invalid data')
+                messages.error(request,'`project` sheet entries missing required fields.! Please check.')
+                return redirect("item_view")
+
+        # getting data from expense sheet and create estimate.
+        ws = wb['Sheet1']
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            dcNo = slno
+            
+            challn=project1(name=project_name,billing=billing_method,start=start_date,end=end_date,action=action,user=user2,rateperhour=pcost,c_name=cid)
+            challn.save()
+            # challn2=customer(customerName=customer_name,address2=billing_address,customerEmail=email,start=start_date,end=end_date,action=action)
+            # challn.save()
+            messages.success(request, 'Data imported successfully.!')
+            return redirect("item_view")
+
+
 from openpyxl import load_workbook
 
 
