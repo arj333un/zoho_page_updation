@@ -1,0 +1,5 @@
+def itemview(request):
+    company = company_details.objects.get(user = request.user)
+    user=User.objects.get(username=request.user)
+    viewitem=AddItem.objects.filter(user_id=user.id) 
+    return render(request,'item_view.html',{'view':viewitem,'company':company})

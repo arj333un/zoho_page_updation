@@ -429,8 +429,17 @@ def edit_profile(request,pk):
 @login_required(login_url='login')
 def itemview(request):
     company = company_details.objects.get(user = request.user)
-    viewitem=AddItem.objects.all()
+    user=User.objects.get(username=request.user)
+    viewitem=AddItem.objects.filter(user_id=user.id) 
     return render(request,'item_view.html',{'view':viewitem,'company':company})
+
+
+def viewpricelist(request):
+    company = company_details.objects.get(user = request.user)
+    user=User.objects.get(username=request.user)
+    view=Pricelist.objects.filter(user_id=user.id) 
+                                                                                                                                                                                                                                                                                                                          
+    return render(request,'view_price_list.html',{'view':view,'company':company})
 
 
 @login_required(login_url='login')
