@@ -19827,8 +19827,9 @@ def custmz_rprt_shw_hide(request):
 @login_required(login_url='login')
 def detail(request,id):
     company=company_details.objects.get(user=request.user)
+    user=User.objects.get(username=request.user)
     user_id=request.user
-    items=AddItem.objects.all()
+    items=AddItem.objects.filter(user_id=user.id) 
     product=AddItem.objects.get(id=id)
     history=History.objects.filter(p_id=product.id)
     comments = Comments_item.objects.filter(item=id).order_by('-id')
