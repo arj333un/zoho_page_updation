@@ -936,7 +936,6 @@ urlpatterns = [
     
     path('sharePricelistToEmail/<int:id>/', views.sharePricelistToEmail, name='sharePricelistToEmail'),
     
-    path('sharePricelistToEmail1/<int:id>/', views.sharePricelistToEmail1, name='sharePricelistToEmail1'),
     
     path('import_item', views.import_item, name='import_item'),
 
