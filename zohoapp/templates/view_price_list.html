@@ -239,10 +239,10 @@
           <p></p>
         </div>
         <hr>
-        <form action="" method="POST" enctype="multipart/form-data">
-          {% comment %} {% csrf_token %}
+        <form action="{% url "" %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
           <label style="color: rgb(152, 152, 255);" class=" fw-bolder" for="">Download Sample Excel File</label>
-              <a class="btn btn-outline-warning ms-5" href="">Download</a> {% endcomment %}
+              <a class="btn btn-outline-warning ms-5" href="">Download</a> 
              <hr>
               <input class="form-control bg-dark" type="file" name="excel_file">
               <hr>
