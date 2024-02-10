@@ -310,7 +310,24 @@
         $('#estimates-table').children('tbody').append(row);
       });
     }
-
+    <script>
+      $(document).ready(function() {
+        var originalTable = $('#estimates-table').clone(); // Clone the original table on page load
+    
+        // Function to sort items by name
+        function sortByName() {
+          var rows = $('#estimates-table tbody tr').get();
+          rows.sort(function(a, b) {
+            var keyA = $(a).children('td').eq(1).text().toUpperCase(); // Adjust the column index for Name
+            var keyB = $(b).children('td').eq(1).text().toUpperCase(); // Adjust the column index for Name
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return 1;
+            return 0;
+          });
+          $.each(rows, function(index, row) {
+            $('#estimates-table').children('tbody').append(row);
+          });
+        }
     // Function to sort items by HSN/SAC
     function sortByItem() {
       var rows = $('#estimates-table tbody tr').get();
