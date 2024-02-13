@@ -411,6 +411,34 @@
      }
    }
   </script>
+  <script>
+    function exportToExcel() {
+      $('.export_hide').remove()
+      var table = document.querySelector('table');
+      var ws = XLSX.utils.table_to_sheet(table);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, 'report.xlsx');
+      window.location.href=""
+  }
+  function call_import()
+  {
+    $('#call_input').click()
+  }
+  $(document).ready(function(){
+    $('#call_input').on('change',function(){
+      $('#click_sbmt').click()
+     
+    })
+  })
+   function reduce_dash(){
+     alert($('.form-inline .form-check').Width())
+     if($('.form-inline .form-check').css('width')=== '100%')
+     {
+       $('.mdi-menu').click()
+     }
+   }
+  </script>
   <script src="path/to/html2pdf.bundle.js"></script>
   
   <script>

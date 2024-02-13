@@ -19924,7 +19924,7 @@ def sharePricelistToEmail(request,id):
 
 
 def import_item(request):
-    print("heloooooooooooooooooooooooo")
+    print("heloo")
     user1=request.user.id
     user2=User.objects.get(id=user1)
     cmp=company_details.objects.get(user=user1)
