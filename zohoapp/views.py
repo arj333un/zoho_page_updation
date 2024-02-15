@@ -19921,8 +19921,6 @@ def sharePricelistToEmail(request,id):
 
 
 
-
-
 def import_item(request):
     print("heloo")
     user1=request.user.id
@@ -19968,6 +19966,8 @@ def import_item(request):
             # challn.save()
             messages.success(request, 'Data imported successfully.!')
             return redirect("item_view")
+
+
 
 
 
