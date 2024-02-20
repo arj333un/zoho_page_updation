@@ -259,7 +259,7 @@
                   <button class="btn btn-outline-warning"  title="Edit"><i class="fas fa-plus"></i></button>
                 </a>
 
-                {% comment %}  <a class="text-dark"     data-toggle="dropdown"  >
+                 <a class="text-dark"     data-toggle="dropdown"  >
                   <button class="btn btn-outline-warning "  title="Share"><i class="fas fa-share"></i></button>
                </a>
                <div class="dropdown-menu " >
@@ -276,14 +276,14 @@
               <a class=" text-dark"  onclick="printSelectedArea()"  >
                 <button class="btn btn-outline-warning"  title="Print"><i class="fas fa-print"></i>
                 </button> 
-               </a> {% endcomment %}
+               </a> 
               </div>
           </div><br>
 
           <div class="row" id="div-to-pdf" style="background-color: #ffddb0; overflow-y: scroll; height: 71vh; margin-left:1px; margin-right: 1rem; ">
 
             <div class="row text-center">
-                <h2 style="color: #000000;"><br>Items
+                <h2 style="color: #000000;"><br>
                     <hr>
                 </h2>
             </div>
@@ -318,7 +318,7 @@
                         <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{product.tax}}</p>
                     </div>
                 </div>
-                {% if sale.customer.GSTIN %}
+               {% if sale.customer.GSTIN %}
                 <div class="row mt-3">
                     <div class="col-5"><label class="text-dark" for="">Stock On Inventory :</label></div>
                     <div class="col-7">
@@ -326,7 +326,7 @@
                         </p>
                     </div>
                 </div>
-                {% endif %}
+                {% endif %} 
                 <div class="row mt-3">
                     <div class="col-5"><label class="text-dark" for="">Cost Price :</label></div>
                     <div class="col-7">
@@ -351,122 +351,30 @@
                         <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{product.sales.Account_name}}</p>
                     </div>
                 </div>
-                {% comment %} <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Payment Method :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.pay_method}}</p>
-                    </div>
-                </div>
-                {% if sale.pay_method == 'upi' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">UPI ID :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.upi_id}}</p>
-                    </div>
-                </div>
-                {% elif sale.pay_method == 'cheque' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Cheque ID :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.cheque_id}}</p>
-                    </div>
-                </div>
-                {% elif sale.pay_method != 'cash' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Bank Account :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{bank.ac_no}}</p>
-                    </div>
-                </div>
-                {% endif %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Subtotal :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.subtotal}}</p>
-                    </div>
-                </div>
-                {% if sale.igst != '0.00' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">IGST :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.igst}}</p>
-                    </div>
-                </div>
-                {% endif %}
-                {% if sale.cgst != '0.00' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">CGST :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.cgst}}</p>
-                    </div>
-                </div>
-                {% endif %}
-                {% if sale.sgst != '0.00' %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">SGST :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.sgst}}</p>
-                    </div>
-                </div>
-                {% endif %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Tax Amount :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.t_tax}}</p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Shipping Charge :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.sh_charge}}</p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Adjustment :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.adjust}}</p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Total Amount :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.grandtotal}}</p>
-                    </div>
-                </div>
-                {% if sale.advance != 0.0 %}
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Advance :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.advance}}</p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-5"><label class="text-dark" for="">Balance Amount :</label></div>
-                    <div class="col-7">
-                        <p class="bold text-dark" style="max-width: 15rem;word-wrap: break-word;">{{sale.balance}}</p>
-                    </div>
-                </div>
-                {% endif %}
-            </div> {% endcomment %}
-            <div class="p-info col-6" style="height: 100%; margin-bottom: 1vh;">
-                <div class="card" style="background-color: rgb(110, 61, 46); padding-left: 50rem; padding-top: 1rem;">
+                
+            <div class="p-info col-6" style="height: 100px; margin-bottom: 1px; margin-left: 500px;">
+ 
+             <div class="card" style="background-color: rgb(110, 61, 46); padding-left: 500rem; padding-top: 1rem;"> 
                   <div class="row text-center">
                     <h2>PURCHASE DETAILS
                         <hr>
+
                     </h2>
+                    
                 </div>
-              
-                                          
+                
+                
+                      
                     <div class="row mt-2">
-                        <div class="col-5"><label for="">Purchase Account :</label></div>
+                        <div class="col-5"><label for="">Cost Price :</label></div>
                         <div class="col-7">
-                            <p class="bold">{{product.purchase.Account_name}}</p>
+                            <p class="bold">{{product.p_price}}</p>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-5"><label for="">Description :</label></div>
+                        <div class="col-5"><label for="">Sellig Price :</label></div>
                         <div class="col-7">
-                            <p class="bold">{{product.p_desc}}</p>
+                            <p class="bold">{{product.s_price}}</p>
                         </div>
                     </div>
                     <div class="row text-center">
@@ -877,14 +785,15 @@
                        <table >
                            <thead >
                                <tr>
-                                <th id="th" style="text-align: center;"class="text-black">Transcations</th>
-                                 <th id="th" style="text-align: center;"class="text-black">Type</th>
-                                 <th id="th" style="text-align: center;" class="text-black">Name</th>
+                                
+                                    <th id="th" style="text-align: center;"class="text-black">Transcations</th>
+                                   <th id="th" style="text-align: center;"class="text-black">Type</th>
+                                    <th id="th" style="text-align: center;" class="text-black">Name</th>
                                    <th id="th" style="text-align: center;" class="text-black">Date</th>
                                    <th id="th" style="text-align: center;" class="text-black">Quantity</th>
                                    <th id="th" style="text-align: center;" class="text-black">Price</th>
                                    <th id="th" style="text-align: center;" class="text-black">Status</th>
-                                   {% comment %} <th id="th" style="text-align: center;"> Total</th> {% endcomment %}
+                                    {% comment %} <th id="th" style="text-align: center;"> Total</th>  {% endcomment %}
                                </tr>
                            </thead>
                            <tbody class="text-black">
@@ -892,8 +801,10 @@
 
                             <tr>
                               <td>Estimate</td>
+                              <td>{{v.estimate.type}}</td>
 
                               <td>{{ v.estimate.customer_name }}</td>
+
                               <td>{{ v.estimate.estimate_date }}</td>
                               <td>{{ v.quantity }}</td>
                               <td>{{ v.rate }}</td>
@@ -906,6 +817,8 @@
                             {% for s in sales_order %}
                             <tr>
                               <td>Sales Order</td>
+                              <td>{{ s.sale.type }}</td>
+
                               <td>{{ s.sale.customer.customerName }}</td>
                               <td>{{ s.sale.sales_date }}</td>
                               <td>{{ s.quantity }}</td>
@@ -917,6 +830,9 @@
                             {% for r in recurring_invoice %}
                             <tr>
                               <td>Recurring Invoice</td>
+                              <td></td>
+                
+
                               <td>{{ r.ri.cname }}</td>
                               <td>{{ r.ri.start }}</td>
                               <td>{{ r.quantity }}</td>
@@ -928,6 +844,9 @@
                             {% for p in purchase_order %}
                             <tr>
                               <td>Purchase Order</td>
+                              <td></td>
+                              
+
                               <td>{{ p.PO.customer_name }}</td>
                               <td>{{ p.PO.Ord_date }}</td>
                               <td>{{ p.quantity }}</td>
@@ -939,6 +858,7 @@
                             {% for r in recurring_bills %}
                             <tr>
                               <td>Recurring Bills</td>
+                              <td></td>
                               <td>{{ r.recur_bills.customer_name }}</td>
                               <td>{{ r.recur_bills.start_date }}</td>
                               <td>{{ r.quantity }}</td>
@@ -950,6 +870,7 @@
                             {% for i in invoice %}
                             <tr>
                               <td>Invoice</td>
+                              <td></td>
                               <td>{{ i.inv.customer.customerName }}</td>
                               <td>{{ i.inv.inv_date }}</td>
                               <td>{{ i.quantity }}</td>
@@ -961,6 +882,7 @@
                             {% for d in deliveryChellan %}
                             <tr>
                               <td>DeliveryChellan</td>
+                              <td></td>
                               <td>{{ d.chellan.customer_name }}</td>
                               <td>{{ d.chellan.chellan_date }}</td>
                               <td>{{ d.quantity }}</td>
@@ -972,6 +894,7 @@
                             {% for b in bills %}
                             <tr>
                               <td>Bills</td>
+                              <td></td>
                               <td>{{ b.purchase_bill.customer_name }}</td>
                               <td>{{ b.purchase_bill.bill_date }}</td>
                               <td>{{ b.quantity }}</td>
@@ -983,6 +906,7 @@
                             {% for e in expense %}
                             <tr>
                               <td>Expense</td>
+                              <td></td>
                               <td>{{ e.customername }}</td>
                               <td>{{ e.start_date }}</td>
                               <td>{{ e.quantity }}</td>
