@@ -19965,7 +19965,7 @@ def import_item(request):
             # challn2=customer(customerName=customer_name,address2=billing_address,customerEmail=email,start=start_date,end=end_date,action=action)
             # challn.save()
             messages.success(request, 'Data imported successfully.!')
-            return redirect("item_view")
+            return redirect("item_view")s
 
 
 
