@@ -452,7 +452,7 @@
                                 {% for comt in Comments %}
                                 <tbody>
                                     <tr>
-                                      <td>{{ forloop.counter }}</td>
+                                      <td>{{ forloop.counter}}</td>
                                       <td id="comment-text-{{ comt.id }}">{{ comt.content }}</td>
                                         {% comment %} <td><textarea name="" id="" cols="80" rows="5" style="border: none;background-color:transparent ;color: white;">{{ comt.content }}</textarea></td> {% endcomment %}
                                         <td><button class="btn btn-primary" onclick="editComment({{ comt.id }})">Edit</button></td> 
