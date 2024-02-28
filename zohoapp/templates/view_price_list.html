@@ -293,6 +293,33 @@
 
 
 <script>
+  // Function to filter items based on status
+  function filterItems(status) {
+    if (status === 'active' || status === 'Active') {
+      $('tbody tr').hide().filter('.active, .Active').show();
+    } else if (status === 'inactive' || status === 'Inactive') {
+      $('tbody tr').hide().filter('.inactive, .Inactive').show();
+    } else {
+      $('tbody tr').show(); // Show all items
+    }
+  }
+
+  // Attach the filter function to the filter buttons
+  $('#filterActiveButton').on('click', function() {
+    filterItems('active');
+  });
+
+  $('#filterInactiveButton').on('click', function() {
+    filterItems('inactive');
+  });
+
+  $('#filterAllButton').on('click', function() {
+    filterItems('all');
+  });
+</script>
+
+
+<script>
   $(document).ready(function() {
     var originalTable = $('#estimates-table').clone(); // Clone the original table on page load
 
