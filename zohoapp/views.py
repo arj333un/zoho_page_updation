@@ -19915,11 +19915,11 @@ def sharePricelistToEmail(request,id):
 
 
 
-def import_item(request):
+# def import_item(request):
     print("heloo")
     user1=request.user.id
     user2=User.objects.get(id=user1)
-    cmp=company_details.objects.get(user=user1)
+    item=AddItem.objects.get(user=user1)
     cid=customer.objects.get(id=1)
     print("heloooooooooooooooooooooooo")
     if request.method == 'POST' and 'excel_file' in request.FILES:
@@ -19933,17 +19933,20 @@ def import_item(request):
         except:
             print('sheet not found')
             messages.error(request,'`project` sheet not found.! Please check.')
-            return redirect('vproj')
+            return redirect('item_view')
         ws = wb["Sheet1"]
-        estimate_columns = ['SLNO','PROJECT NAME','PROJECT CODE','CUSTOMER NAME','EMAIL','BILLING ADDRESS','BILLING METHOD','START DATEE','END DATE','ACTION','PROJECT COST']
+        #estimate_columns = ['SLNO','PROJECT NAME','PROJECT CODE','CUSTOMER NAME','EMAIL','BILLING ADDRESS','BILLING METHOD','START DATEE','END DATE','ACTION','PROJECT COST']
+        estimate_columns = ['NAME','HSN','SALES RATE','PURCHASE RATE','STOCK ON INVENTORY','USAGE UNIT','STATUS']
+
         estimate_sheet = [cell.value for cell in ws[1]]
         if estimate_sheet != estimate_columns:
             print('invalid sheet')
             messages.error(request,'`project` sheet column names or order is not in the required formate.! Please check.')
-            return redirect("vproj")
+            return redirect("item_view")
         for row in ws.iter_rows(min_row=2, values_only=True):
-            slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
-            if slno is None or project_name is None or project_code is None or customer_name is None or email is None or billing_address is None or billing_method is None or start_date is None or end_date is None or action is None or pcost is None   :
+            #slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            Name,hsn,s_price,p_price,stock,satus = row
+            if Name is None or hsn is None or s_price is None or p_price is None or stock is None or satus is None  :
                 print('challan == invalid data')
                 messages.error(request,'`project` sheet entries missing required fields.! Please check.')
                 return redirect("item_view")
@@ -19951,17 +19954,52 @@ def import_item(request):
         # getting data from expense sheet and create estimate.
         ws = wb['Sheet1']
         for row in ws.iter_rows(min_row=2, values_only=True):
-            slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
-            dcNo = slno
+            Name,hsn,s_price,p_price,stock,satus = row
+
+            #slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            #dcNo = slno
             
-            challn=project1(name=project_name,billing=billing_method,start=start_date,end=end_date,action=action,user=user2,rateperhour=pcost,c_name=cid)
-            challn.save()
+            itm=project1(name=Name,hsn=hsn,s_price=s_price,p_price=p_price,status=satus,)
+            itm.save()
             # challn2=customer(customerName=customer_name,address2=billing_address,customerEmail=email,start=start_date,end=end_date,action=action)
             # challn.save()
             messages.success(request, 'Data imported successfully.!')
             return redirect("item_view")
 
+def import_item(request):
+    if request.method == 'POST' and 'excel_file' in request.FILES:
+        excel_file = request.FILES.get('excel_file')
+        try:
+            wb = load_workbook(excel_file)
+            ws = wb["Sheet1"]
 
+            header_row = ws[1]
+            column_names = [cell.value for cell in header_row]
+            expected_columns = ['NAME', 'HSN', 'SALES RATE', 'PURCHASE RATE', 'STOCK ON INVENTORY', 'USAGE UNIT', 'STATUS']
+
+            if column_names != expected_columns:
+                raise ValueError("`project` sheet column names or order is not in the required format. Please check.")
+
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                Name, hsn, s_price, p_price, stock, status = row
+
+                if not all((Name, hsn, s_price, p_price, stock, status)):
+                    raise ValueError("One or more required fields are missing in the sheet entries. Please check.")
+
+                # Save data to the database
+                project1.objects.create(name=Name, hsn=hsn, s_price=s_price, p_price=p_price, stock=stock, status=status)
+
+            messages.success(request, 'Data imported successfully!')
+        except FileNotFoundError:
+            messages.error(request, 'File not found. Please upload a valid Excel file.')
+        except ValueError as ve:
+            messages.error(request, str(ve))
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+    else:
+        messages.error(request, 'No file found in the request.')
+
+    return redirect("itemview")
 
 
 

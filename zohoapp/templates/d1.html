@@ -194,7 +194,7 @@
                 <i  class="fas fa-sort m-1"></i>
               </a>
               <div class="dropdown-menu m-1">
-               {% comment %} <a class="dropdown-item" href="{% url 'detail' v.id %}">All</a> {% endcomment %}
+               {% comment %} <a class="dropdown-item" href="{% url 'detail' v.id %}">All</a>  {% endcomment %}
                 
                 <a class="dropdown-item" onclick="sortTable()">Customer Name</a>
                 <a class="dropdown-item" onclick="sortTablebal()">Total</a>
@@ -213,7 +213,7 @@
               <tbody>
                 {% for v in allproduct %}
        
-                <tr class="clickable" id="{{p.id}}">
+                <tr class="clickable" id="{{v.id}}">
        
                   <td class="justify-content-between align-items-center ">
                     {% comment %} {{}}<br><br> {% endcomment %}
@@ -285,7 +285,7 @@
 
     <div class="row text-center">
         <h2 style="color: #000000;"><br>
-            Item<hr>
+            {{product.Name}}<hr>
         </h2>
     </div>
     <div class="row">
@@ -376,12 +376,7 @@
                         <p class="bold">{{product.sales.Account_name}}</p>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-5"><label for="">Description :</label></div>
-                    <div class="col-7">
-                        <p class="bold">{{product.s_desc}}</p>
-                    </div>
-                </div>
+               
                 <div class="row mt-2">
                   <div class="col-5"><label for="">Stock On Inventory :</label></div>
                   <div class="col-7">
