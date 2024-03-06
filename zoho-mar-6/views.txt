@@ -47,3 +47,32 @@ def detail(request,id):
         #'svalue' : svalue,
     }
     return render(request,'d1.html',context)
+
+
+def addprice(request):
+    company=company_details.objects.get(user=request.user)
+    user=User.objects.get(username=request.user)
+    add=AddItem.objects.filter(user_id=user.id) 
+
+    return render(request,'addprice_list.html',{'add':add,'company':company})
+
+
+@login_required(login_url='login')
+def additem_page_challan(request):
+    unit=Unit.objects.all()
+    sale=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    accounts = Purchase.objects.all()
+    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
+
+    
+    account = Sales.objects.all()
+    account_type = set(Sales.objects.values_list('Account_type', flat=True))
+    
+    
+
+    return render(request,'additem_challan.html',{'unit':unit,'sale':sale,'purchase':purchase,
+               
+                            "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
+                            
+                            })
