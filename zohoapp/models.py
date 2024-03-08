@@ -50,12 +50,18 @@ class Purchase(models.Model):
 
 
 
+# class Unit(models.Model):
+#     unit=models.TextField(max_length=255)
+
+#     def __str__(self):
+#         return self.unit
+
+
 class Unit(models.Model):
     unit=models.TextField(max_length=255)
 
     def __str__(self):
         return self.unit
-
 
     
     
