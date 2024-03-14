@@ -19967,39 +19967,39 @@ def import_item(request):
             return redirect("itemview")
 
 # def import_item(request):
-#     if request.method == 'POST' and 'excel_file' in request.FILES:
-#         excel_file = request.FILES.get('excel_file')
-#         try:
-#             wb = load_workbook(excel_file)
-#             ws = wb["Sheet1"]
+    if request.method == 'POST' and 'excel_file' in request.FILES:
+        excel_file = request.FILES.get('excel_file')
+        try:
+            wb = load_workbook(excel_file)
+            ws = wb["Sheet1"]
 
-#             header_row = ws[1]
-#             column_names = [cell.value for cell in header_row]
-#             expected_columns = ['NAME', 'HSN', 'SALES RATE', 'PURCHASE RATE', 'STOCK ON INVENTORY', 'USAGE UNIT', 'STATUS']
+            header_row = ws[1]
+            column_names = [cell.value for cell in header_row]
+            expected_columns = ['NAME', 'HSN', 'SALES RATE', 'PURCHASE RATE', 'STOCK ON INVENTORY', 'USAGE UNIT', 'STATUS']
 
-#             if column_names != expected_columns:
-#                 raise ValueError("`project` sheet column names or order is not in the required format. Please check.")
+            if column_names != expected_columns:
+                raise ValueError("`project` sheet column names or order is not in the required format. Please check.")
 
-#             for row in ws.iter_rows(min_row=2, values_only=True):
-#                 Name, hsn, s_price, p_price, stock, status = row
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                Name, hsn, s_price, p_price, stock, status = row
 
-#                 if not all((Name, hsn, s_price, p_price, stock, status)):
-#                     raise ValueError("One or more required fields are missing in the sheet entries. Please check.")
+                if not all((Name, hsn, s_price, p_price, stock, status)):
+                    raise ValueError("One or more required fields are missing in the sheet entries. Please check.")
 
-#                 # Save data to the database
-#                 project1.objects.create(name=Name, hsn=hsn, s_price=s_price, p_price=p_price, stock=stock, status=status)
+                # Save data to the database
+                project1.objects.create(name=Name, hsn=hsn, s_price=s_price, p_price=p_price, stock=stock, status=status)
 
-#             messages.success(request, 'Data imported successfully!')
-#         except FileNotFoundError:
-#             messages.error(request, 'File not found. Please upload a valid Excel file.')
-#         except ValueError as ve:
-#             messages.error(request, str(ve))
-#         except Exception as e:
-#             messages.error(request, f'An error occurred: {str(e)}')
-#     else:
-#         messages.error(request, 'No file found in the request.')
+            messages.success(request, 'Data imported successfully!')
+        except FileNotFoundError:
+            messages.error(request, 'File not found. Please upload a valid Excel file.')
+        except ValueError as ve:
+            messages.error(request, str(ve))
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+    else:
+        messages.error(request, 'No file found in the request.')
 
-#     return redirect("itemview")
+    return redirect("itemview")
 
 
 

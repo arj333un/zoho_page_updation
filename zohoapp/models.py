@@ -379,7 +379,7 @@ class Pricelist(models.Model):
     roundoff=models.CharField(max_length=255,null=True)
     currency=models.CharField(max_length=255,null=True)
     status= models.TextField(default='active')
-    date=models.DateTimeField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
 
     
 class Sample_table(models.Model):
