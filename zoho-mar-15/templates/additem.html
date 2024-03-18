@@ -217,7 +217,14 @@
                 return pattern.test(field);
               }
               
+              {% comment %} function validateSixDigitsOrMore(field) {
+                // Define the regular expression pattern for six digits or more
+                var pattern = /^\d{6,}$/;
               
+                // Check if the field matches the pattern
+                return pattern.test(field);
+            } {% endcomment %}
+
               function validateInput() {
                 var inputField = document.getElementById("myInputField");
                 var inputValue = inputField.value;

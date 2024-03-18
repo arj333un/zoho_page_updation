@@ -19915,12 +19915,61 @@ def sharePricelistToEmail(request,id):
 
 
 
+# import xlrd  # You may need to install this package: pip install xlrd
+# from django.shortcuts import render, redirect
+# from .models import AddItem  # Replace YourItemModel with your actual model
+
+# def import_item(request):
+#     if request.method == 'POST' and request.FILES['excel_file']:
+#         excel_file = request.FILES['excel_file']
+#         # Check if the uploaded file is an Excel file
+#         if not excel_file.name.endswith('.xls') and not excel_file.name.endswith('.xlsx'):
+#             return render(request, 'item_view.html', {'error_message': 'Please upload a valid Excel file.'})
+        
+#         try:
+#             # Open the uploaded Excel file
+#             workbook = xlrd.open_workbook(file_contents=excel_file.read())
+#             worksheet = workbook.sheet_by_index(0)
+
+#             # Loop through each row in the Excel file
+#             for row_index in range(1, worksheet.nrows):  # Assuming the first row contains headers
+#                 row = worksheet.row_values(row_index)
+#                 # Assuming the columns in your Excel file match the fields of your model
+#                 name = row[0]
+#                 sales_rate = row[2]
+#                 purchase_rate = row[3]
+#                 hsn_sac = row[4]
+#                 stock = row[5]
+#                 usage_unit = row[6]
+#                 status = row[7]
+
+#                 # Create or update your model instance
+#                 item, created = AddItem.objects.update_or_create(
+#                     name=name,
+#                     defaults={
+#                         'sales_rate': sales_rate,
+#                         'purchase_rate': purchase_rate,
+#                         'hsn_sac': hsn_sac,
+#                         'stock': stock,
+#                         'usage_unit': usage_unit,
+#                         'status': status
+#                     }
+#                 )
+                
+#             return redirect('success_url')  # Redirect to a success page after importing
+#         except Exception as e:
+#             return render(request, 'item_view.html', {'error_message': str(e)})
+#     else:
+#         return render(request, 'item_view.html')  # Render the import form template
+
+
+
 def import_item(request):
     print("heloo")
     user1=request.user.id
     user2=User.objects.get(id=user1)
     item=AddItem.objects.get(user=user1)
-    cid=customer.objects.get(id=1)
+    # cid=customer.objects.get(id=1)
     print("heloooooooooooooooooooooooo")
     if request.method == 'POST' and 'excel_file' in request.FILES:
         excel_file = request.FILES.get('excel_file')
@@ -19933,16 +19982,16 @@ def import_item(request):
         except:
             print('sheet not found')
             messages.error(request,'`project` sheet not found.! Please check.')
-            return redirect('item_view')
+            return redirect('itemview')
         ws = wb["Sheet1"]
         #estimate_columns = ['SLNO','PROJECT NAME','PROJECT CODE','CUSTOMER NAME','EMAIL','BILLING ADDRESS','BILLING METHOD','START DATEE','END DATE','ACTION','PROJECT COST']
-        estimate_columns = ['NAME','HSN','SALES RATE','PURCHASE RATE','STOCK ON INVENTORY','USAGE UNIT','STATUS']
+        estimate_columns = ['NAME','HSN','SALES RATE','PURCHASE RATE','STOCK ON INVENTORY','USAGE UNIT','SATUS']
 
         estimate_sheet = [cell.value for cell in ws[1]]
         if estimate_sheet != estimate_columns:
             print('invalid sheet')
             messages.error(request,'`project` sheet column names or order is not in the required formate.! Please check.')
-            return redirect("item_view")
+            return redirect("itemview")
         for row in ws.iter_rows(min_row=2, values_only=True):
             #slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
             Name,hsn,s_price,p_price,stock,satus = row
@@ -19965,43 +20014,6 @@ def import_item(request):
             # challn.save()
             messages.success(request, 'Data imported successfully.!')
             return redirect("itemview")
-
-# def import_item(request):
-    if request.method == 'POST' and 'excel_file' in request.FILES:
-        excel_file = request.FILES.get('excel_file')
-        try:
-            wb = load_workbook(excel_file)
-            ws = wb["Sheet1"]
-
-            header_row = ws[1]
-            column_names = [cell.value for cell in header_row]
-            expected_columns = ['NAME', 'HSN', 'SALES RATE', 'PURCHASE RATE', 'STOCK ON INVENTORY', 'USAGE UNIT', 'STATUS']
-
-            if column_names != expected_columns:
-                raise ValueError("`project` sheet column names or order is not in the required format. Please check.")
-
-            for row in ws.iter_rows(min_row=2, values_only=True):
-                Name, hsn, s_price, p_price, stock, status = row
-
-                if not all((Name, hsn, s_price, p_price, stock, status)):
-                    raise ValueError("One or more required fields are missing in the sheet entries. Please check.")
-
-                # Save data to the database
-                project1.objects.create(name=Name, hsn=hsn, s_price=s_price, p_price=p_price, stock=stock, status=status)
-
-            messages.success(request, 'Data imported successfully!')
-        except FileNotFoundError:
-            messages.error(request, 'File not found. Please upload a valid Excel file.')
-        except ValueError as ve:
-            messages.error(request, str(ve))
-        except Exception as e:
-            messages.error(request, f'An error occurred: {str(e)}')
-    else:
-        messages.error(request, 'No file found in the request.')
-
-    return redirect("itemview")
-
-
 
 
 
