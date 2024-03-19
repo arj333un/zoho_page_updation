@@ -2,9 +2,6 @@
 {% load static %}
 {% block content %}
 <style>
-
-
-
   .open-button {
     background-color: #ccc;
     color: black;
@@ -148,20 +145,18 @@
     text-align: left;
     padding-left: 10px;
   }
- 
+  
 
 </style>
 
-<div>
-<section style="height: 1200px; overflow-y: auto;">
-  
-  <div class="row  container-fluid" style="top: 5rem;border-radius: 10px;background-color: #191C24;" >
+
+<section >
+  <div class="row fixed-top  " style="top: 6rem; margin-left: 20rem;" >
     
     <div class="col-md-12 " style="width: 100%;">
-        <h3  class="mb-3  text-white  mt-4" style="font-size: 2rem;">New item</h3>     
-        <hr>
-        <!--  -->
-        <!-- <div style="overflow-y: scroll;height: 700px;" > -->
+        <h3  class="mb-3  text-white  " style="font-size: 2rem;">New item</h3>     
+    
+        <div style="overflow-y: scroll;height: 600px;" >
           <form action="{% url 'add' %}" method="post" id="Form">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -170,11 +165,11 @@
                 <div class="col-sm-10 form-inline">
                   <div class="form-check ">
                     <input required class="form-check-input " type="radio" name="type" id="gridRadios1" value="Goods" style="margin-left:5px;">
-                    <label class="form-check-label text-white" for="gridRadios1">Goods</label>
+                    <label class="form-check-label" for="gridRadios1">Goods</label>
                   </div>
                   <div class="form-check ml-5">
                     <input required class="form-check-input " type="radio" name="type" id="gridRadios2" value="Services" style="margin-left:50px;">
-                    <label class="form-check-label text-white" for="gridRadios2">Services</label>
+                    <label class="form-check-label" for="gridRadios2">Services</label>
                   </div>
                         
                 </div>
@@ -183,32 +178,29 @@
             <div class="form-group row">
               <label  class="col-sm-2 col-form-label ">Name *</label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
-                <input required type="text" class="form-control text-black" name="name" id="nameInput">
+                <input required type="text" class="form-control bg-white text-dark" name="name" id="nameInput">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">Unit <i class="fa fa-question-circle"></i></label>
               <div class="col-sm-10 col-md-7 col-9" style="margin-left: -2.2rem;">
-                  <div class="d-flex align-items-center">
-                      <select name="unit" class="form-control text-black" id="unit" style="width: 100%;">
-                          {% for u in unit %}
-                          <option value="{{u.id}}">{{u.unit}}</option>
-                          {% endfor %}
-                      </select>
-                      <button style="width: 2.5rem; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="open-button" onclick="openForm()">+</button>
-                  </div>
+                  <select name="unit" class="form-control bg-white text-dark" id="unit">
+                      {% for u in unit %}
+                      <option value="{{u.id}}">{{u.unit}}</option>
+                      {% endfor %}
+                  </select>
               </div>
+              <button style="width: 5rem;" class="open-button" onclick="openForm()">Add Unit</button>
           </div>
-          
 
             <div class="form-group row">
               <label  class="col-sm-2 col-form-label">HSN Code</label> 
               <div class="col-sm-10 col-md-7 col-9"  style="margin-left: -2.2rem;" >
-                <input required type="number" class="form-control text-black" name="hsn" id="myInputField" oninput="validateInput()">
+                <input required type="number" class="form-control bg-white text-dark" name="hsn" id="myInputField" oninput="validateInput()">
                 <div id="validationResult"></div>
               </div>
             </div>
-             <script>
+            <script>
               function validateSixDigits(field) {
                 // Define the regular expression pattern for exactly six digits
                 var pattern = /^\d{6,}$/;
@@ -217,7 +209,6 @@
                 return pattern.test(field);
               }
               
-              
               function validateInput() {
                 var inputField = document.getElementById("myInputField");
                 var inputValue = inputField.value;
@@ -225,18 +216,18 @@
                 var validationResultDiv = document.getElementById("validationResult");
               
                 if (validateSixDigits(inputValue)) {
-                  validationResultDiv.textContent = "Valid: The field contains six digits.";
+                  validationResultDiv.textContent = "Valid: The field contains exactly six digits.";
                 } else {
-                  validationResultDiv.textContent = "Invalid: The field does not contain six digits.";
+                  validationResultDiv.textContent = "Invalid: The field does not contain  six digits.";
                 }
               }
             
             </script>
-            <div class="form-inline text-white" >
+            <div class="form-inline text-white">
               <label class="text-danger mb-4 mr-4" for="">Tax Preference  :</label>
               <p class="text-white  ">
-              <input type="radio"  name="radio" value="taxable" onclick="showAllSelect()" style="margin-left:95px;">  Taxable</p>
-              <p><input type="radio" name="radio" value="no-taxable" onclick="hideAllSelect()" style="margin-left:62px;"> None-Taxable </p><br><br>
+              <input type="radio"  name="radio" value="taxable" onclick="showAllSelect()" style="margin-left:40px;">  Taxable</p>
+              <p><input type="radio" name="radio" value="no-taxable" onclick="hideAllSelect()" style="margin-left:50px;"> None-Taxable </p><br><br>
             </div>
 
             <div class="row">
@@ -244,7 +235,7 @@
             
                 <div id="select1_div" style="display: none;">
                   <label for="select1">Intra-State TAX</label>
-                  <select name="intra" class="form-control text-black" id="select1">
+                  <select name="intra" class="form-control bg-white text-dark" id="select1">
                     <option value="GST0[0%]">GST0[0%]</option>
                     <option value="GST3[3%]">GST3[3%]</option>
                     <option value="GST5[5%]">GST5[5%]</option>
@@ -257,7 +248,7 @@
               <div class="col-md-6">
                 <div id="select2_div" style="display: none;">
                   <label for="select2">Inter-State TAX</label>
-                  <select name="inter" class="form-control text-black" id="select2">
+                  <select name="inter" class="form-control bg-white text-dark" id="select2">
                     <option value="IGST0[0%]">IGST0[0%]</option>
                     <option value="IGST5[5%]">IGST3[3%]</option>
                     <option value="IGST5[5%]">IGST5[5%]</option>
@@ -286,41 +277,29 @@
           select2_div.style.display = "none";
           }
           </script>
-
-
-          <script>
-            function showAllSelect() {
-            var select1_div = document.getElementById("select1_div");
-            var select2_div = document.getElementById("select2_div");
-            select1_div.style.display = "block";
-            select2_div.style.display = "block";
-            }
-  
-         
-
           <div class="row">
             <div class="col-md-6">
               <input  type="checkbox" name="selling" checked> <label >selling  information</label><br><br>
               <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Selling price *</label>
+                <label  class="col-sm-2 col-form-label">Selling price *</label>
                 <div class="col-sm-12 col-md-7 col-9 ml-5">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                      <div class="input-group-text text-white">INR</div>
+                      <div class="input-group-text">INR</div>
                     </div>
-                    <input required type="text" name="sel_price" class="form-control text-black">
+                    <input required type="text" name="sel_price" class="form-control bg-white text-dark">
                   </div>
                 </div>
               </div>
               <div class="form-group row">
                 <label  class="col-sm-2 col-form-label">Account *</label>
                 <div class="col-sm-10 col-md-7 col-9 ml-5">
-                  <select name="sel_acc" class="form-control text-dark">
+                  <select name="sel_acc" class="form-control bg-white text-dark">
                     
                          
                     
                     {% for account_type in account_type %}
-                      <option value="" disabled class="btn btn-dark  highlight-account-type"><b>{{ account_type }}</b></option>
+                      <option value="" disabled class="btn btn text-dark highlight-account-type"><b>{{ account_type }}</b></option>
                       {% for account in account %}
                       {% if account.Account_type == account_type %}
                       <option value="{{account.id}}">{{ account.Account_name }}</option>
@@ -334,7 +313,7 @@
               <div class="form-group row">
                 <label  class="col-sm-2 col-form-label">Description </label>
                 <div class="col-sm-10 col-md-7 col-9 ml-5">
-                  <input  type="text" name="sel_desc" class="form-control text-black" >
+                  <input required  type="text" name="sel_desc" class="form-control bg-white text-dark" >
                 </div>
               </div>
                                     
@@ -346,45 +325,38 @@
                 <div class="col-sm-10 col-md-7 col-9">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                      <div class="input-group-text text-white">INR</div>
+                      <div class="input-group-text">INR</div>
                     </div>
-                    <input required type="text" class="form-control text-black" name="cost_price" >
+                    <input required type="text" class="form-control bg-white text-dark" name="cost_price" >
                   </div>
                 </div>
               </div>
               <div class="form-group row in">
                 <label class="col-sm-2 col-form-label">Account *</label>
-                <div class="col-sm-10 col-md-7 col-5">
-                    <div class="d-flex align-items-center">
-                        <select name="cost_acc" class="form-control text-black" id="myaccount" >
-                            {% for account_type in account_types %}
-                            <option value="" disabled class="btn btn-dark text-light highlight-account-type"><b>{{ account_type }}</b></option>
-                            {% for account in accounts %}
-                            {% if account.Account_type == account_type %}
-                            <option value="{{account.id}}">{{ account.Account_name }}</option>
-                            {% endif %}
-                            {% endfor %}
-                            {% endfor %}
-                        </select>
-                        <button id="showFormButton" style="width: 40px; background-color: chocolate; color: black; border-radius: 3px; margin-left: 10px;" class="openbutton" onclick="showForm()">+</button>
-                    </div>
-                </div>
-            </div>
-            
-            
+                <div class="col-sm-10 col-md-7 col-9">
+                  <select name="cost_acc" class="form-control bg-white text-dark" id="myaccount">
+                    {% for account_type in account_types %}
+                    <option value="" disabled class="btn btn text-dark highlight-account-type"><b>{{ account_type }}</b></option>
+                    {% for account in accounts %}
+                    {% if account.Account_type == account_type %}
+                    <option value="{{account.id}}">{{ account.Account_name }}</option>
+                    
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                  </select>             
+
+                  </div>
+                <button id="showFormButton" style="width:5rem;" class="openbutton" onclick="showForm()">Add</button>
+              </div>
+              
 
 
               <div class="form-group row">
                 <label  class="col-sm-2 col-form-label">Description </label>
                 <div class="col-sm-10 col-md-7 col-9">
-                  <input  type="text" name="cost_desc" class="form-control text-black"  >
+                  <input  type="text" name="cost_desc" class="form-control bg-white text-dark"  >
                 </div>
-              </div>
-            </div>
-            <div class="form-group row mt-1">
-              <label  class="col-sm-2 col-form-label">Minimum Stock to maintain </label>
-              <div class="col-sm-7 col-md-3 col-9">
-                <input  type="text" name="minimum_stock" class="form-control text-black" style="margin-left: -2.4rem;" >
               </div>
             </div>
             <fieldset class="form-group">
@@ -393,11 +365,11 @@
                 <div class="col-sm-10 form-inline">
                   <div class="form-check ">
                     <input required class="form-check-input" type="radio" name="status" id="gridRadios1" value="Active"  style="margin-left:5px;" >
-                    <label class="form-check-label text-white" for="gridRadios1">Activate</label>
+                    <label class="form-check-label" for="gridRadios1">Activate</label>
                   </div>
                   <div class="form-check ml-5">
                     <input required class="form-check-input" type="radio" name="status" id="gridRadios2" value="Inactive" style="margin-left:50px;">
-                    <label class="form-check-label text-white" for="gridRadios2">Non-Activate</label>
+                    <label class="form-check-label" for="gridRadios2">Non-Activate</label>
                   </div>
                     
                 </div>
@@ -410,14 +382,14 @@
                  Track Inventory for this item</label> {% endcomment %}
                   {% comment %} <input type="hidden" name="trackState" id="trackState" value="" unchecked> {% endcomment %}
                   <label>
-                    <input type="checkbox" name="trackstate" value="trackstate" class=" "  onclick="toggleFormFields()">
+                    <input type="checkbox" name="trackstate" value="trackstate" class=" bg-dark"  onclick="toggleFormFields()">
                     Track Inventory for this item
                   </label>
                   <div id="formFields" style="display: none;"> 
                     <div class="form-group row" >
                       <label class="col-sm-2 col-form-label">Inventory Account *</label>
                       <div class="col-sm-10 col-md-7 col-9" style="margin-left: -1rem;">
-                        <select class="form-select form-select-sm mt-3 text-black" name="invacc">
+                        <select class="form-select form-select-sm mt-3" name="invacc">
                           <option>Choose..</option>
                           <option value="inventory assets">Inventory Asset</option>
                         </select>
@@ -426,13 +398,13 @@
                     <div class="form-group row ">
                       <label class="col-sm-2 col-form-label">Opening Stock</label>
                       <div class=" col-md-5">
-                        <input  type="number" class="form-control text-black"  name="openstock" value="0">
+                        <input  type="number" class="form-control  bg-white text-dark"  name="openstock" value="0">
                       </div>
                       <div class="col-md-5  ">
                         <div class="row align-items-center">
                           <label class="col-sm-6 col-form-label">Opening Stock Rate per Unit</label>
                           <div class="col-sm-6">
-                            <input type="number" class="form-control text-black" name="inventoryaccntperunit"  value="0">
+                            <input type="number" class="form-control bg-white text-dark" name="inventoryaccntperunit"  value="0">
                           </div>
 
                         </div>
@@ -472,16 +444,15 @@
               </script>
               <br><br> <br>
           <div class="form-inline " style="margin-bottom: 200px;">
-            <button type="submit"  class="mr-3 btn" style="background-color: chocolate;" value="Save">Save</button>
-            <button type="button" class="mr-3 btn" onclick="resetForm()" value="Cancel" style="margin-left:10px;background-color: chocolate;">Cancel</button>
+            <button type="submit"  class="mr-3 btn btn-success"  value="Save">Save</button>
+            <button type="button" class="mr-3 btn btn-secondary " onclick="resetForm()" value="Cancel" style="margin-left:10px;">Cancel</button>
           </div>
         </form>
-      
+      </div>
     </div>
   </div>
-  
  </section>
-</div>
+
  <script>
   function resetForm() {
     document.getElementById("Form").reset();

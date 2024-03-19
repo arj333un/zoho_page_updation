@@ -602,6 +602,7 @@ def add(request):
     return render(request,'additem.html')
 
 
+
 @login_required(login_url='login')
 def edititem(request,id):
     item=AddItem.objects.all

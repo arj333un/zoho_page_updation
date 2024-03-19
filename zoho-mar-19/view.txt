@@ -1,0 +1,310 @@
+def additem(request):
+    company=company_details.objects.get(user=request.user)
+    unit=Unit.objects.all()
+    sale=Sales.objects.all()
+    purchase=Purchase.objects.all()
+    accounts = Purchase.objects.all()
+    account_types = set(Purchase.objects.values_list('Account_type', flat=True))
+
+    
+    account = Sales.objects.all()
+    account_type = set(Sales.objects.values_list('Account_type', flat=True))
+    
+    
+
+    return render(request,'additem.html',{'unit':unit,'sale':sale,'purchase':purchase,'company':company,
+               
+                            "account":account,"account_type":account_type,"accounts":accounts,"account_types":account_types,
+                            
+                            })
+
+@login_required(login_url='login')
+def add_account(request):
+    if request.method=='POST':
+        Account_type  =request.POST.get('acc_type')
+        if Account_type is not None:
+            Account_name =request.POST['acc_name']
+            Account_desc =request.POST['acc_desc']
+        
+            acc=Purchase(Account_type=Account_type,Account_name=Account_name,Account_desc=Account_desc)
+            acc.save() 
+            account_id=acc.id 
+                           
+            return JsonResponse({"Account_type":Account_type,"Account_name":Account_name,"Account_desc":Account_desc,'account_id':account_id})
+        
+    return render(request,'additem.html')
+
+
+@login_required(login_url='login')
+def add(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            radio=request.POST.get('radio')
+           
+            
+            if radio =='taxable':
+                print('tax section')
+                
+    
+                
+                inter=request.POST['inter']
+                intra=request.POST['intra']
+                type=request.POST.get('type')
+                name=request.POST['name']
+                unit=request.POST['unit']
+                hsn=request.POST['hsn']
+                status=request.POST.get('status')
+                sel_price=request.POST.get('sel_price')
+                sel_acc=request.POST.get('sel_acc')
+                s_desc=request.POST.get('sel_desc')
+                cost_price=request.POST.get('cost_price')
+                cost_acc=request.POST.get('cost_acc')      
+                p_desc=request.POST.get('cost_desc')
+                min_stock=request.POST.get('minimum_stock')
+                tax=request.POST.get('radio')
+                u=request.user.id
+                us=request.user
+                history="Created by" + str(us)
+                user=User.objects.get(id=u)
+                unit=Unit.objects.get(id=unit)
+                sel=Sales.objects.get(id=sel_acc)
+                cost=Purchase.objects.get(id=cost_acc)
+                invacc=request.POST.get('invacc')
+                stock=request.POST.get('openstock')
+                stock_per_unit = request.POST.get('inventoryaccntperunit')
+           
+                print('satus')
+                
+                ad_item=AddItem(type=type,
+                                Name=name,
+                                p_desc=p_desc,
+                                s_desc=s_desc,
+                                minimum_stock=min_stock,
+                                s_price=sel_price,
+                                p_price=cost_price,
+                                tax=tax,
+                                hsn=hsn,
+                                unit=unit,
+                                sales=sel,
+                                purchase=cost,
+                                satus=status,
+                                user=user,
+                                creat=history,
+                                interstate=inter,
+                                intrastate=intra,
+                                invacc=invacc,
+                                stock=stock,
+                                rate=stock_per_unit
+                                )
+                ad_item.save()
+                
+            else:
+                print('nontaxsection')
+                                                  
+                type=request.POST.get('type')
+                name=request.POST['name']
+                unit=request.POST['unit']
+                hsn=request.POST['hsn']
+                sel_price=request.POST.get('sel_price')
+                sel_acc=request.POST.get('sel_acc')
+                s_desc=request.POST.get('sel_desc')
+                cost_price=request.POST.get('cost_price')
+                cost_acc=request.POST.get('cost_acc')      
+                p_desc=request.POST.get('cost_desc')
+                min_stock=request.POST.get('minimum_stock')
+                tax=request.POST.get('radio')
+                status=request.POST.get('status')
+                u=request.user.id
+                us=request.user
+                history="Created by" + str(us)
+                user=User.objects.get(id=u)
+                unit=Unit.objects.get(id=unit)
+                sel=Sales.objects.get(id=sel_acc)
+                cost=Purchase.objects.get(id=cost_acc)
+                istock = request.POST['openstock']
+                invacc=request.POST.get('invacc')
+                stock_per_unit = request.POST.get('inventoryaccntperunit')
+
+                ad_item=AddItem(type=type,
+                                Name=name,
+                                hsn=hsn,
+                                p_desc=p_desc,
+                                s_desc=s_desc,
+                                minimum_stock=min_stock,
+                                s_price=sel_price,
+                                p_price=cost_price,
+                                unit=unit,
+                                sales=sel,
+                                tax=tax,
+                                purchase=cost,
+                                satus = status,
+                                user=user,
+                                creat=history,
+                                interstate='none',
+                                intrastate='none',
+                                invacc=invacc,
+                                stock=istock,
+                                rate=stock_per_unit
+                            
+                               
+                                )
+                
+                ad_item.save()
+           
+           
+            return redirect("itemview")
+    return render(request,'additem.html')
+
+
+
+@login_required(login_url='login')
+def itemview(request):
+    company = company_details.objects.get(user = request.user)
+    user=User.objects.get(username=request.user)
+    viewitem=AddItem.objects.filter(user_id=user.id) 
+    return render(request,'item_view.html',{'view':viewitem,'company':company})
+
+
+
+@login_required(login_url='login')
+def detail(request,id):
+    company=company_details.objects.get(user=request.user)
+    user=User.objects.get(username=request.user)
+    user_id=request.user
+    items=AddItem.objects.filter(user_id=user.id) 
+    product=AddItem.objects.get(id=id)
+    history=History.objects.filter(p_id=product.id)
+    comments = Comments_item.objects.filter(item=id).order_by('-id')
+    print(product.id)
+    
+    
+    estimate = EstimateItems.objects.filter(item_name = product.Name)
+    sales_order = sales_item.objects.filter(product = product.Name)
+    recurring_invoice = recur_itemtable.objects.filter(iname = product.Name)
+    purchase_order = Purchase_Order_items.objects.filter(item = product.Name)
+    recurring_bills = recurring_bills_items.objects.filter(item = product.Name)
+    invoice = invoice_item.objects.filter(product = product.Name)
+    deliveryChellan = ChallanItems.objects.filter(item_name = product.Name)
+    bills = PurchaseBillItems.objects.filter(item_name = product.Name)
+    expense = Expense.objects.filter(goods_label = product.Name)
+    
+    quantity = int(product.stock)
+    price = int(product.p_price)
+    stock = (quantity * price)
+    #svalue= (product.p_price * stock)
+    
+    
+    
+    context={
+       "allproduct":items,
+       "product":product,
+       "history":history,
+       'company': company, 
+       "comments":comments,
+       'stock': stock,
+        'estimate': estimate,
+        'sales_order': sales_order,
+        'recurring_invoice': recurring_invoice,
+        'purchase_order': purchase_order,
+        'recurring_bills': recurring_bills,
+        'invoice': invoice,
+        'deliveryChellan': deliveryChellan,
+        'bills': bills,
+        'expense': expense,
+        'stock': stock,
+        #'svalue' : svalue,
+    }
+    return render(request,'d1.html',context)
+
+
+
+
+def sharePricelistToEmail(request,id):
+    if request.user:
+        try:
+            if request.method == 'POST':
+                emails_string = request.POST['email_ids']
+
+                # Split the string by commas and remove any leading or trailing whitespace
+                emails_list = [email.strip() for email in emails_string.split(',')]
+                email_message = request.POST['email_message']
+                # print(emails_list)
+
+                cmp = company_details.objects.get( user = request.user.id)
+                bill = Pricelist.objects.get(id = id)
+                items = AddItem.objects.get(id = id)
+                        
+                context = {'bill': bill, 'cmp': cmp,'items':items}
+                template_path = 'item_pdf.html'
+                template = get_template(template_path)
+
+                html  = template.render(context)
+                result = BytesIO()
+                pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
+                pdf = result.getvalue()
+                filename = f'Item - {items.Name}.pdf'
+                subject = f"Item - {items.Name}"
+                email = EmailMessage(subject, f"Hi,\nPlease find the attached Items  - Bill-{items.hsn}. \n{email_message}\n\n--\nRegards,\n{cmp.company_name}\n{cmp.address}\n{cmp.state} - {cmp.country}\n{cmp.contact_number}", from_email=settings.EMAIL_HOST_USER,to=emails_list)
+                email.attach(filename, pdf, "application/pdf")
+                email.send(fail_silently=False)
+
+                msg = messages.success(request, 'Bill has been shared via email successfully..!')
+                return redirect(detail,id)
+        except Exception as e:
+            print(e)
+            messages.error(request, f'{e}')
+            return redirect(detail, id)
+
+
+
+
+def import_item(request):
+    print("heloo")
+    user1=request.user.id
+    user2=User.objects.get(id=user1)
+    item=AddItem.objects.get(user=user1)
+    # cid=customer.objects.get(id=1)
+    print("heloooooooooooooooooooooooo")
+    if request.method == 'POST' and 'excel_file' in request.FILES:
+        excel_file = request.FILES.get('excel_file')
+        wb = load_workbook(excel_file)
+        try:
+            ws = wb["Sheet1"]
+            header_row = ws[1]
+            column_names = [cell.value for cell in header_row]
+            print("Column Names:", column_names)
+        except:
+            print('sheet not found')
+            messages.error(request,'`project` sheet not found.! Please check.')
+            return redirect('itemview')
+        ws = wb["Sheet1"]
+        #estimate_columns = ['SLNO','PROJECT NAME','PROJECT CODE','CUSTOMER NAME','EMAIL','BILLING ADDRESS','BILLING METHOD','START DATEE','END DATE','ACTION','PROJECT COST']
+        estimate_columns = ['NAME','HSN','SALES RATE','PURCHASE RATE','STOCK ON INVENTORY','USAGE UNIT','SATUS']
+
+        estimate_sheet = [cell.value for cell in ws[1]]
+        if estimate_sheet != estimate_columns:
+            print('invalid sheet')
+            messages.error(request,'`project` sheet column names or order is not in the required formate.! Please check.')
+            return redirect("itemview")
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            #slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            Name,hsn,s_price,p_price,stock,satus = row
+            if Name is None or hsn is None or s_price is None or p_price is None or stock is None or satus is None  :
+                print('challan == invalid data')
+                messages.error(request,'`project` sheet entries missing required fields.! Please check.')
+                return redirect("itemview")
+
+        # getting data from expense sheet and create estimate.
+        ws = wb['Sheet1']
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            Name,hsn,s_price,p_price,stock,satus = row
+
+            #slno, project_name,project_code,customer_name,email,billing_address,billing_method,start_date,end_date,action,pcost = row
+            #dcNo = slno
+            
+            itm=project1(name=Name,hsn=hsn,s_price=s_price,p_price=p_price,status=satus,)
+            itm.save()
+            # challn2=customer(customerName=customer_name,address2=billing_address,customerEmail=email,start=start_date,end=end_date,action=action)
+            # challn.save()
+            messages.success(request, 'Data imported successfully.!')
+            return redirect("itemview")

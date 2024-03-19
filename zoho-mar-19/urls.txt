@@ -1,0 +1,3 @@
+path('sharePricelistToEmail/<int:id>/', views.sharePricelistToEmail, name='sharePricelistToEmail'),
+    
+path('import_item', views.import_item, name='import_item'),
