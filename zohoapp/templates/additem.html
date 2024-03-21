@@ -208,7 +208,7 @@
                 <div id="validationResult"></div>
               </div>
             </div>
-             <script>
+            <script>
               function validateSixDigits(field) {
                 // Define the regular expression pattern for exactly six digits
                 var pattern = /^\d{6,}$/;
@@ -217,14 +217,6 @@
                 return pattern.test(field);
               }
               
-              {% comment %} function validateSixDigitsOrMore(field) {
-                // Define the regular expression pattern for six digits or more
-                var pattern = /^\d{6,}$/;
-              
-                // Check if the field matches the pattern
-                return pattern.test(field);
-            } {% endcomment %}
-
               function validateInput() {
                 var inputField = document.getElementById("myInputField");
                 var inputValue = inputField.value;
@@ -293,18 +285,6 @@
           select2_div.style.display = "none";
           }
           </script>
-
-
-          <script>
-            function showAllSelect() {
-            var select1_div = document.getElementById("select1_div");
-            var select2_div = document.getElementById("select2_div");
-            select1_div.style.display = "block";
-            select2_div.style.display = "block";
-            }
-  
-         
-
           <div class="row">
             <div class="col-md-6">
               <input  type="checkbox" name="selling" checked> <label >selling  information</label><br><br>
@@ -341,7 +321,7 @@
               <div class="form-group row">
                 <label  class="col-sm-2 col-form-label">Description </label>
                 <div class="col-sm-10 col-md-7 col-9 ml-5">
-                  <input  type="text" name="sel_desc" class="form-control text-black" >
+                  <input required  type="text" name="sel_desc" class="form-control text-black" >
                 </div>
               </div>
                                     
