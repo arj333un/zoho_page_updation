@@ -323,7 +323,7 @@ filterItems('all');
     var ws = XLSX.utils.table_to_sheet(table);
     var wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'report.xlsx');
+    XLSX.writeFile(wb, 'itemlist.xlsx');
     window.location.href=""
 }
 function call_import()
