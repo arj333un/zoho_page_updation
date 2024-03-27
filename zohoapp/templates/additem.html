@@ -588,7 +588,7 @@ function closeForm() {
   
     // Send the form data through AJAX
     $.ajax({
-      url: "{% url 'add_account' %}",
+      url: "{% url 'create_account' %}",
       type: "POST",
       data: formData,
       processData: false,
